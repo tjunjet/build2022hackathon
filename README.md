@@ -1,1 +1,1 @@
-# build2022hackathon
+# build 2022 hackathon
