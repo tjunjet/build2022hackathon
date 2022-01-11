@@ -6,7 +6,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            clothes: Array(),
+            clothes: Array(), //Save clothes as an array of objects
         }
     }
     addGarment(customName, garmentType) {
@@ -14,18 +14,6 @@ class App extends React.Component {
             customName: customName,
             garmentType: garmentType,
         });
-        /*
-        // NOT SURE WHY, but the below seems to cause the "1 submit delay" bug
-        // (Clicking the submit button only logs the data of the previous submit)
-        const clothes = this.state.clothes.slice();
-        clothes.push({
-            customName: customName,
-            garmentType: garmentType,
-        });
-        this.setState({
-            clothes: clothes,
-        });
-        */
         console.log(this.state.clothes);
     }
     render() {
@@ -39,11 +27,6 @@ class App extends React.Component {
 }
 
 class Form extends React.Component {
-    /*
-    Consider changing form to a controlled component (use React to update what
-        is displayed within the text box as the user types):
-        https://reactjs.org/docs/forms.html
-    */
     constructor(props) {
         super(props);
         this.state = {
