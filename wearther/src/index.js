@@ -9,27 +9,53 @@ class App extends React.Component {
             clothes: Array(),
         }
     }
+    addGarment(customName, garmentType) {
+        const clothes = this.state.clothes.slice();
+        clothes.push({
+            customName: customName,
+            garmentType: garmentType,
+        });
+        this.setState({
+            clothes: clothes,
+        });
+        console.log(this.state.clothes);
+    }
     render() {
         return (
             <div className="app">
                 <h1>Hello!</h1>
-                <Form />
+                <Form onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}/>
             </div>
         );
     }
 }
 
 class Form extends React.Component {
+    /*
+    Consider changing form to a controlled component (use React to update what
+        is displayed within the text box as the user types):
+        https://reactjs.org/docs/forms.html
+    */
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        const userInput = event.target;
+        this.props.onSubmit(userInput.customName.value, userInput.garmentType.value);
+    }
     render() {
         return(
             <div className="form">
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <fieldset>
-                        <label for="customName">Custom Name (Optional)</label>
+                        <label htmlFor="customName">Custom Name (Optional)</label>
                         <input type="text" id="customName" name="customName" />
                     </fieldset>
                     <fieldset>
-                        <label for="garmentType">Type of Garment</label>
+                        <label htmlFor="garmentType">Type of Garment</label>
                         <select id="garmentType" name="garmentType">
                             <option value="tshirt">T Shirt</option>
                             <option value="downjacket">Down Jacket</option>
