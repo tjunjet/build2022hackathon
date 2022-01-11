@@ -10,6 +10,13 @@ class App extends React.Component {
         }
     }
     addGarment(customName, garmentType) {
+        this.state.clothes.push({
+            customName: customName,
+            garmentType: garmentType,
+        });
+        /*
+        // NOT SURE WHY, but the below seems to cause the "1 submit delay" bug
+        // (Clicking the submit button only logs the data of the previous submit)
         const clothes = this.state.clothes.slice();
         clothes.push({
             customName: customName,
@@ -18,6 +25,7 @@ class App extends React.Component {
         this.setState({
             clothes: clothes,
         });
+        */
         console.log(this.state.clothes);
     }
     render() {
@@ -51,8 +59,7 @@ class Form extends React.Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        const userInput = event.target;
-        this.props.onSubmit(userInput.customName.value, userInput.garmentType.value);
+        this.props.onSubmit(event.target.customName.value, event.target.garmentType.value);
     }
     render() {
         return(
