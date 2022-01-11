@@ -38,9 +38,17 @@ class Form extends React.Component {
     */
     constructor(props) {
         super(props);
+        this.state = {
+            customNameValue: "",
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
-
+    handleChange(event) {
+        this.setState({
+            customNameValue: event.target.value,
+        });
+    }
     handleSubmit(event) {
         event.preventDefault();
         const userInput = event.target;
@@ -52,7 +60,13 @@ class Form extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <fieldset>
                         <label htmlFor="customName">Custom Name (Optional)</label>
-                        <input type="text" id="customName" name="customName" />
+                        <input 
+                            type="text" 
+                            id="customName" 
+                            name="customName" 
+                            value={this.state.customNameValue} 
+                            onChange={this.handleChange}
+                        />
                     </fieldset>
                     <fieldset>
                         <label htmlFor="garmentType">Type of Garment</label>
