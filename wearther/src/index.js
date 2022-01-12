@@ -2,6 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+// To encapsulate in a class (probably)
+const garmentTypes = Array(
+    {name: "T Shirt",               value: "tshirt"},
+    {name: "Thermals",              value: "thermals"},
+    {name: "Fleece Jacket",         value: "fleeceJacket"},
+    {name: "Down Jacket",           value: "downJacket"},
+    {name: "Windbreaker Shell",     value: "windbreakerShell"},
+);
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -10,6 +19,14 @@ class App extends React.Component {
             nextGarmentID: 1,
         };
     }
+    
+    
+    // Adding to & removing from list of available clothes
+    /*
+    Send JSON data to backend via fetch(): 
+    https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+    (refer to Uploading JSON data section)
+    */
     addGarment(customName, garmentType) {
         const clothes = this.state.clothes;
         clothes.push({
@@ -29,6 +46,7 @@ class App extends React.Component {
             clothes: clothes,
         });
     }
+
     render() {
         return (
             <div className="app">
@@ -88,6 +106,15 @@ class Form extends React.Component {
         this.props.onSubmit(event.target.customName.value, event.target.garmentType.value);
     }
     render() {
+        // garmentTypes currently stored as a top-level constant (probably encapsulate in a class in the future)
+        const garmentOptions = garmentTypes.map((item) => {
+            return (
+                <option value={item.value}>
+                    {item.name}
+                </option>
+            );
+        });
+        
         return(
             <div className="form">
                 <form onSubmit={this.handleSubmit}>
@@ -104,9 +131,7 @@ class Form extends React.Component {
                     <fieldset>
                         <label htmlFor="garmentType">Type of Garment</label>
                         <select id="garmentType" name="garmentType">
-                            <option value="tshirt">T Shirt</option>
-                            <option value="downjacket">Down Jacket</option>
-                            <option value="insulatedparka">Insulated Parka</option>
+                            {garmentOptions}
                         </select>
                     </fieldset>
                     <button type="submit">Add</button>
