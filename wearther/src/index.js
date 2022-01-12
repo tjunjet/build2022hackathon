@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { Form } from './components/Form'
+import { Introduction } from './components/Introduction'
+import { WeatherReport } from './components/WeatherReport'
+import { GarmentsList } from './components/GarmentsList'
 
 // To encapsulate in a class (probably)
 const garmentTypes = Array(
@@ -17,9 +21,9 @@ class App extends React.Component {
         this.state = {
             clothes: Array(), //Save clothes as an array of objects
             nextGarmentID: 1,
+            garmentTypes: garmentTypes,
         };
     }
-    
     
     // Adding to & removing from list of available clothes
     /*
@@ -52,136 +56,11 @@ class App extends React.Component {
             <div className="app">
                 <Introduction />
                 <WeatherReport />
-                <Form onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}/>
+                <Form 
+                    onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
+                    garmentTypes={this.state.garmentTypes}
+                />
                 <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
-            </div>
-        );
-    }
-}
-
-class Introduction extends React.Component {
-    render() {
-        return (
-            <div className="introduction">
-                <h1>
-                    The Winter Wear-ther Guide
-                </h1>
-                <p>
-                    This app suggests clothes to wear based on your available wardrobe and local weather.
-                    Add to the list of clothes in your possession below, and a "to-wear" list will be generated.
-                </p>
-            </div>
-            
-        );
-    }
-}
-
-class WeatherReport extends React.Component {
-    render() {
-        return (
-            <div className="weatherReport">
-                <h2>
-                    Weather Report
-                </h2>
-                <p>
-                    <b>Your location: </b>Somewhere
-                </p>
-                <p>
-                    <b>Temperature: </b>35-42 F
-                </p>
-                <p>
-                    <b>Precipitation: </b>None
-                </p>
-                <p>
-                    <b>Wind speed: </b>8 mph
-                </p>
-                    
-                
-            </div>
-        );
-    }
-}
-
-class GarmentsList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    handleRemove(id) {
-        this.props.onRemoveGarment(id);
-    }
-    render() {
-        const garmentsList = this.props.currentGarments.map((item) => {
-            return(
-                <li key={item.id}>
-                    <p>id: {item.id}</p>
-                    <p>{item.customName}</p>
-                    <p>{item.garmentType}</p>
-                    <button onClick={() => this.handleRemove(item.id)}>Remove</button>
-                </li>
-            );
-        });
-        console.log(this.props.currentGarments);
-        return (
-            <div className="garmentsList">
-                <h2>Current Garments</h2>
-                <ul>{garmentsList}</ul>
-            </div>
-        );
-        
-    }
-}
-
-class Form extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            customNameValue: "",
-        };
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-    handleChange(event) {
-        this.setState({
-            customNameValue: event.target.value,
-        });
-    }
-    handleSubmit(event) {
-        event.preventDefault();
-        this.props.onSubmit(event.target.customName.value, event.target.garmentType.value);
-    }
-    render() {
-        // garmentTypes currently stored as a top-level constant (probably encapsulate in a class in the future)
-        const garmentOptions = garmentTypes.map((item) => {
-            return (
-                <option value={item.value}>
-                    {item.name}
-                </option>
-            );
-        });
-        
-        return(
-            <div className="form">
-                <h2>Add to Wardrobe</h2>
-                <form onSubmit={this.handleSubmit}>
-                    <fieldset>
-                        <label htmlFor="customName">Custom Name (Optional)</label>
-                        <input 
-                            type="text" 
-                            id="customName" 
-                            name="customName" 
-                            value={this.state.customNameValue} 
-                            onChange={this.handleChange}
-                        />
-                    </fieldset>
-                    <fieldset>
-                        <label htmlFor="garmentType">Type of Garment</label>
-                        <select id="garmentType" name="garmentType">
-                            {garmentOptions}
-                        </select>
-                    </fieldset>
-                    <button type="submit">Add</button>
-                    <button type="reset">Reset</button>
-                </form>
             </div>
         );
     }
