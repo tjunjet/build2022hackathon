@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import './index.css';
 import { Form } from './components/Form'
 import { Introduction } from './components/Introduction'
@@ -51,7 +52,16 @@ class App extends React.Component {
         });
     }
 
+    //Testing HTTP request with Axios
+    getTestData() {
+        const url = 'https://api.weather.gov/points/39.7456,-97.0892';
+        axios.get(url).then((response) => {console.log(response)}); 
+    }
+
     render() {
+        //Test
+        this.getTestData();
+
         return (
             <div className="app">
                 <Introduction />
