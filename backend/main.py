@@ -4,12 +4,12 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# user = {
-#     "age" : { },
-#     "weight" : { },
-#     "height" : { },
-#     "gender": { }
-# }
+particulars = {
+    "age" : {  },
+    "weight" : { },
+    "height" : { },
+    "gender": { }
+}
 
 clothings = {
     1: {
@@ -21,13 +21,18 @@ clothings = {
 class Clothing(BaseModel):
     name : str
     category : str
-
-# @app.get("/")
-# def root():
-#     return {"message": "Hello World"}
-
+    
 # input of user's particulars
+@app.get("/get-particulars/{info_type}")
+def get_clothing(info_type : str):
+    return {info_type : particulars[info_type]}
 
+@app.post("/create-particulars/{info_type}")
+def create_clothing(info_type : str, info : int):
+    if info_type not in particulars:
+        return {"Error": "Invalid type of particulars"}
+    particulars[info_type] = info
+    return {"info type": info_type}
 
 # creation of clothing list
 @app.get("/get-clothing/{clothing_id}")
