@@ -64,7 +64,7 @@ class App extends React.Component {
         this.getTestData();
 
         return (
-            <div className="app">
+            <div className="app ">
                 <div className="container">
                     <h1 className="page-header">The Winter Wear-ther Guide</h1>
                 </div>

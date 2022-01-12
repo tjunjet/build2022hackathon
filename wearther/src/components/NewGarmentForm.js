@@ -39,27 +39,43 @@ export class NewGarmentForm extends React.Component {
         
         return(
             <div className="form">
-                <div className="container">
+                <div className="container mb-3">
                     <h2>Add to Wardrobe</h2>
                     <form onSubmit={this.handleSubmit}>
-                        <fieldset>
-                            <label htmlFor="customName">Custom Name (Optional)</label>
-                            <input 
-                                type="text" 
-                                id="customName" 
-                                name="customName" 
-                                value={this.state.customNameValue} 
-                                onChange={this.handleChange}
-                            />
-                        </fieldset>
-                        <fieldset>
-                            <label htmlFor="garmentType">Type of Garment</label>
-                            <select id="garmentType" name="garmentType">
-                                {garmentOptions}
-                            </select>
-                        </fieldset>
-                        <button type="submit">Add</button>
-                        <button type="reset">Reset</button>
+                        <div className="row">
+                            <div className="col">
+                                <div className="form-group">
+                                    <label className="mb-2">Custom Name</label>
+                                    <input 
+                                        type="text" 
+                                        id="customName" 
+                                        name="customName" 
+                                        value={this.state.customNameValue} 
+                                        onChange={this.handleChange}
+                                        className="form-control"
+                                        placeholder="Add a custom name (optional)"
+                                    />
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-group">
+                                    <label className="mb-2">Type of Clothing</label>
+                                    <select 
+                                        id="garmentType" 
+                                        name="garmentType"
+                                        className="form-control"
+                                        defaultValue="default"
+                                    >
+                                        <option value="default" disabled>Select</option>
+                                        {garmentOptions}
+                                    </select>
+                                </div>
+                            </div>  
+                        </div>
+                        <div className="form-group">
+                            <button type="submit" className="btn btn-secondary mt-2">Add</button>
+                            <button type="reset" className="btn btn-default mt-2">Reset</button>
+                        </div>
                     </form>
                 </div>
             </div>
