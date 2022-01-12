@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import './bootstrap-5.1.3-dist/css/bootstrap.min.css';
 import './index.css';
-import { Form } from './components/Form'
+import { NewGarmentForm } from './components/NewGarmentForm'
 import { Introduction } from './components/Introduction'
 import { WeatherReport } from './components/WeatherReport'
 import { GarmentsList } from './components/GarmentsList'
@@ -63,10 +64,10 @@ class App extends React.Component {
         this.getTestData();
 
         return (
-            <div className="app">
+            <div className="container">
                 <Introduction />
                 <WeatherReport />
-                <Form 
+                <NewGarmentForm 
                     onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
                     garmentTypes={this.state.garmentTypes}
                 />

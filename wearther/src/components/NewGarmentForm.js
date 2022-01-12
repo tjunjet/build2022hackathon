@@ -10,7 +10,7 @@ const garmentTypes = Array(
     {name: "Windbreaker Shell",     value: "windbreakerShell"},
 );
 
-export class Form extends React.Component {
+export class NewGarmentForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
