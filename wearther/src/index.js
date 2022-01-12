@@ -161,6 +161,7 @@ class Form extends React.Component {
         
         return(
             <div className="form">
+                <h2>Add to Wardrobe</h2>
                 <form onSubmit={this.handleSubmit}>
                     <fieldset>
                         <label htmlFor="customName">Custom Name (Optional)</label>
