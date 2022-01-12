@@ -50,9 +50,53 @@ class App extends React.Component {
     render() {
         return (
             <div className="app">
-                <h1>Hello!</h1>
+                <Introduction />
+                <WeatherReport />
                 <Form onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}/>
                 <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
+            </div>
+        );
+    }
+}
+
+class Introduction extends React.Component {
+    render() {
+        return (
+            <div className="introduction">
+                <h1>
+                    The Winter Wear-ther Guide
+                </h1>
+                <p>
+                    This app suggests clothes to wear based on your available wardrobe and local weather.
+                    Add to the list of clothes in your possession below, and a "to-wear" list will be generated.
+                </p>
+            </div>
+            
+        );
+    }
+}
+
+class WeatherReport extends React.Component {
+    render() {
+        return (
+            <div className="weatherReport">
+                <h2>
+                    Weather Report
+                </h2>
+                <p>
+                    <b>Your location: </b>Somewhere
+                </p>
+                <p>
+                    <b>Temperature: </b>35-42 F
+                </p>
+                <p>
+                    <b>Precipitation: </b>None
+                </p>
+                <p>
+                    <b>Wind speed: </b>8 mph
+                </p>
+                    
+                
             </div>
         );
     }
