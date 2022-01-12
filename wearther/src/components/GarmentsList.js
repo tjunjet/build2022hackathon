@@ -22,10 +22,11 @@ export class GarmentsList extends React.Component {
         console.log(this.props.currentGarments);
         return (
             <div className="garmentsList">
-                <h2>Current Garments</h2>
-                <ul>{garmentsList}</ul>
+                <div className="container">
+                    <h2>Current Garments</h2>
+                    <ul>{garmentsList}</ul>
+                </div>
             </div>
         );
-        
     }
 }

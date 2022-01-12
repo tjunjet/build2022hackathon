@@ -39,27 +39,29 @@ export class NewGarmentForm extends React.Component {
         
         return(
             <div className="form">
-                <h2>Add to Wardrobe</h2>
-                <form onSubmit={this.handleSubmit}>
-                    <fieldset>
-                        <label htmlFor="customName">Custom Name (Optional)</label>
-                        <input 
-                            type="text" 
-                            id="customName" 
-                            name="customName" 
-                            value={this.state.customNameValue} 
-                            onChange={this.handleChange}
-                        />
-                    </fieldset>
-                    <fieldset>
-                        <label htmlFor="garmentType">Type of Garment</label>
-                        <select id="garmentType" name="garmentType">
-                            {garmentOptions}
-                        </select>
-                    </fieldset>
-                    <button type="submit">Add</button>
-                    <button type="reset">Reset</button>
-                </form>
+                <div className="container">
+                    <h2>Add to Wardrobe</h2>
+                    <form onSubmit={this.handleSubmit}>
+                        <fieldset>
+                            <label htmlFor="customName">Custom Name (Optional)</label>
+                            <input 
+                                type="text" 
+                                id="customName" 
+                                name="customName" 
+                                value={this.state.customNameValue} 
+                                onChange={this.handleChange}
+                            />
+                        </fieldset>
+                        <fieldset>
+                            <label htmlFor="garmentType">Type of Garment</label>
+                            <select id="garmentType" name="garmentType">
+                                {garmentOptions}
+                            </select>
+                        </fieldset>
+                        <button type="submit">Add</button>
+                        <button type="reset">Reset</button>
+                    </form>
+                </div>
             </div>
         );
     }
