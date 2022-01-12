@@ -22,12 +22,19 @@ class App extends React.Component {
             nextGarmentID: (this.state.nextGarmentID + 1),
         });
     }
+    removeGarment(id) {
+        console.log("removeGarment called on " + id)
+        const clothes = this.state.clothes.filter((item) => {return item.id !== id;});
+        this.setState({
+            clothes: clothes,
+        });
+    }
     render() {
         return (
             <div className="app">
                 <h1>Hello!</h1>
                 <Form onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}/>
-                <GarmentsList currentGarments={this.state.clothes}/>
+                <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
             </div>
         );
     }
@@ -37,6 +44,9 @@ class GarmentsList extends React.Component {
     constructor(props) {
         super(props);
     }
+    handleRemove(id) {
+        this.props.onRemoveGarment(id);
+    }
     render() {
         const garmentsList = this.props.currentGarments.map((item) => {
             return(
@@ -44,6 +54,7 @@ class GarmentsList extends React.Component {
                     <p>id: {item.id}</p>
                     <p>{item.customName}</p>
                     <p>{item.garmentType}</p>
+                    <button onClick={() => this.handleRemove(item.id)}>Remove</button>
                 </li>
             );
         });
