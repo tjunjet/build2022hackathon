@@ -7,9 +7,11 @@ Fonts embedded from Google Fonts:
 */
 
 h1 {
-    font-family: 'Playfair Display', Helvetica, Arial, sans-serif
+    font-family: 'Playfair Display', Helvetica, Arial, sans-serif;
 }
 
 body {
-    font-family: 'Open Sans', Helvetica, Arial, sans-serif
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    max-width: 30em;
+    margin: auto;
 }

@@ -7,22 +7,54 @@ class App extends React.Component {
         super(props);
         this.state = {
             clothes: Array(), //Save clothes as an array of objects
-        }
+            nextGarmentID: 1,
+        };
     }
     addGarment(customName, garmentType) {
-        this.state.clothes.push({
+        const clothes = this.state.clothes;
+        clothes.push({
             customName: customName,
             garmentType: garmentType,
+            id: this.state.nextGarmentID,
         });
-        console.log(this.state.clothes);
+        this.setState({
+            clothes: clothes,
+            nextGarmentID: (this.state.nextGarmentID + 1),
+        });
     }
     render() {
         return (
             <div className="app">
                 <h1>Hello!</h1>
                 <Form onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}/>
+                <GarmentsList currentGarments={this.state.clothes}/>
             </div>
         );
+    }
+}
+
+class GarmentsList extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        const garmentsList = this.props.currentGarments.map((item) => {
+            return(
+                <li key={item.id}>
+                    <p>id: {item.id}</p>
+                    <p>{item.customName}</p>
+                    <p>{item.garmentType}</p>
+                </li>
+            );
+        });
+        console.log(this.props.currentGarments);
+        return (
+            <div className="garmentsList">
+                <h2>Current Garments</h2>
+                <ul>{garmentsList}</ul>
+            </div>
+        );
+        
     }
 }
 
