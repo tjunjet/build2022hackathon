@@ -7,11 +7,11 @@ Just run:
 
 import train_test_generation
 ## This returns the whole dataframe
-data = train_test_generation.generateDataset(insert number of rows here, 'raw')
+data = train_test_generation.generatefinaldf(insert number of rows here, 'raw', proportion of data u want to be smart generated as an int (percentage))
 
 
 ## This returns the X and Y for your model
-X , Y = train_test_generation.generateDataset(insert number of rows here, 'ML')
+X , Y = train_test_generation.generatefinaldf(insert number of rows here, 'ML', proportion of data u want to be smart generated as an int (percentage))
 
 Note: 
 
