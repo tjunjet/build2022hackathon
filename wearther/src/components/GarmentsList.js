@@ -20,11 +20,9 @@ export class GarmentsList extends React.Component {
             );
         });
         return (
-            <div className="garmentsList">
-                <div className="container">
-                    <h2>Current Garments</h2>
-                    <ul>{garmentsList}</ul>
-                </div>
+            <div className="garmentsList container">
+                <h2>Current Garments</h2>
+                <ul>{garmentsList}</ul>
             </div>
         );
     }
