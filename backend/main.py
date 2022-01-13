@@ -56,24 +56,18 @@ def create_particulars(info_type : str, info : int):
 def get_clothing(clothing_id : int):
     return clothings[clothing_id]
 
-@app.get("/get-by-name/{clothing_id}")
-async def get_clothing_by_name(*, name: str, clothing_id : Optional[int] = None):
-    # for clothing_id in clothings:
-    #     if clothings[clothing_id]["name"] == name:
-    #         return clothings[clothing_id]
-    #     return {"Data": "Not found"}        
+# connected to db
+@app.get("/get-clothing-by-name/clothing{name}", response_model=Clothing)
+async def get_clothing_by_name(name: str):   
     response = await fetch_one_clothing(name)
     return response 
 
+# connected to db
 @app.post("/create-clothing/{clothing_id}", response_model=Clothing)
 async def create_clothing(clothing : Clothing):
     response = await create_one_clothing(clothing.dict())
     if response: return response
     raise HTTPException(400, "Something went wrong")
-    # if clothing_id in clothings:
-    #     return {"Error": "Clothing exists"}
-    # clothings[clothing_id] = clothing
-    # return {"clothing_id": clothing_id}
 
 @app.delete("/delete-clothing/{clothing_id}")
 def delete_clothing(clothing_id : int):

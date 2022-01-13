@@ -12,8 +12,12 @@ async def fetch_one_clothing(name):
     item = await collection.find_one({"name": name})
     return item
 
-async def create_one_clothing(clothing : Clothing):
+# multiple clothing with the same name can be added!
+async def create_one_clothing(name, clothing : Clothing):
     item = clothing
     result = await collection.insert_one(item)
-    print(clothing, "inserted")
     return item 
+
+async def remove_one_clothing(name):
+    await collection.delete_one({"name":name})
+    return True
