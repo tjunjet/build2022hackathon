@@ -5,7 +5,7 @@ export class MenuBar extends React.Component {
     render() {
         return (
             <div className="MenuBar">
-                <nav className="navbar navbar-light bg-light navbar-expand">
+                <nav className="navbar navbar-light bg-light navbar-expand fixed-top">
                     <div className="container">
                         <span className="navbar-brand mb-0 h1">The Winter Wear-ther Guide</span>
                         <ul className="navbar-nav ml-auto">
