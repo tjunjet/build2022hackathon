@@ -212,9 +212,6 @@ class App extends React.Component {
         return (
             <div className="app ">
                 <MenuBar />
-                <div className="container">
-                    <h1 className="page-header">The Winter Wear-ther Guide</h1>
-                </div>
                 <Introduction />
                 <WeatherReport 
                     weather={this.state.weather}
