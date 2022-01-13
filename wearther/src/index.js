@@ -145,7 +145,8 @@ class App extends React.Component {
         const conditionID = response.data.weather[0].id;
         const conditionMain = response.data.weather[0].main;
         const conditionDesc = response.data.weather[0].description;
-        this.setState({
+        const city = response.data.name;
+        const weather = {
             temp: temp,
             tempMin: tempMin,
             tempMax: tempMax,
@@ -155,10 +156,16 @@ class App extends React.Component {
             conditionID: conditionID,
             conditionMain: conditionMain,
             conditionDesc: conditionDesc,
+        };
+        const location = Object.assign({}, this.state.location);
+        location.city = city;
+        this.setState({
+            weather: weather,
+            location: location,
         });
 
 
-        console.log(conditionMain); // TO DO
+        console.log(this.state.location.city); // TO DO
     }
 
     render() {
@@ -177,7 +184,10 @@ class App extends React.Component {
                     <h1 className="page-header">The Winter Wear-ther Guide</h1>
                 </div>
                 <Introduction />
-                <WeatherReport />
+                <WeatherReport 
+                    weather={this.state.weather}
+                    location={this.state.location}
+                />
                 <NewGarmentForm 
                     onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
                     garmentTypes={this.state.garmentTypes}

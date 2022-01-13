@@ -19,7 +19,6 @@ export class GarmentsList extends React.Component {
                 </li>
             );
         });
-        console.log(this.props.currentGarments);
         return (
             <div className="garmentsList">
                 <div className="container">

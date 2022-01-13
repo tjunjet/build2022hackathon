@@ -10,7 +10,7 @@ export class WeatherReport extends React.Component {
                         Weather Report
                     </h2>
                     <p>
-                        <b>Your location: </b>Somewhere
+                        <b>Your location: </b>{this.props.location.city} ({this.props.location.latitude}, {this.props.location.longitude})
                     </p>
                     <p>
                         <b>Temperature: </b>35-42 F
