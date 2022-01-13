@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from pydantic import BaseModel
 
@@ -10,6 +11,15 @@ from database import (
     create_one_clothing
 )
 
+origins = ['http://localhost:3000']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials = True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 particulars = {
     "age" : {  },
@@ -44,20 +54,20 @@ def create_particulars(info_type : str, info : int):
 # creation of clothing list
 @app.get("/get-clothing/{clothing_id}")
 def get_clothing(clothing_id : int):
-    response = fetch_one_clothing()
-    return response 
-    # return clothings[clothing_id]
+    return clothings[clothing_id]
 
 @app.get("/get-by-name/{clothing_id}")
-def get_clothing_by_name(*, clothing_id : int, name: Optional[str] = None):
-    for clothing_id in clothings:
-        if clothings[clothing_id]["name"] == name:
-            return clothings[clothing_id]
-        return {"Data": "Not found"}        
+async def get_clothing_by_name(*, name: str, clothing_id : Optional[int] = None):
+    # for clothing_id in clothings:
+    #     if clothings[clothing_id]["name"] == name:
+    #         return clothings[clothing_id]
+    #     return {"Data": "Not found"}        
+    response = await fetch_one_clothing(name)
+    return response 
 
-@app.post("/create-clothing/{clothing_id}")
-def create_clothing(clothing_id : int, clothing : Clothing):
-    response = create_one_clothing(clothing)
+@app.post("/create-clothing/{clothing_id}", response_model=Clothing)
+async def create_clothing(clothing : Clothing):
+    response = await create_one_clothing(clothing.dict())
     if response: return response
     raise HTTPException(400, "Something went wrong")
     # if clothing_id in clothings:
