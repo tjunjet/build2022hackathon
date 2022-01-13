@@ -7,6 +7,7 @@ import { NewGarmentForm } from './components/NewGarmentForm'
 import { Introduction } from './components/Introduction'
 import { WeatherReport } from './components/WeatherReport'
 import { GarmentsList } from './components/GarmentsList'
+import { MenuBar } from './components/MenuBar'
 
 const garmentTypes = Array(
     {name: "T Shirt",               value: "tshirt"},
@@ -210,6 +211,7 @@ class App extends React.Component {
 
         return (
             <div className="app ">
+                <MenuBar />
                 <div className="container">
                     <h1 className="page-header">The Winter Wear-ther Guide</h1>
                 </div>
