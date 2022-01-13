@@ -2,14 +2,18 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
-from model import Clothing
+from model import Clothing, WeatherData
 
 app = FastAPI()
 
-from database import (
+from clothing_database import (
     fetch_all_clothings,
     fetch_one_clothing,
     create_one_clothing,
+)
+
+from weather_database import (
+    create_one_weather_data
 )
 
 # some middleware stuff, unsure if relevant
@@ -30,6 +34,11 @@ particulars = {
     "gender": { }
 }
 
+
+###########################
+#### USER PARTICULARS  ####
+###########################
+
 # input of user's particulars
 @app.get("/get-particulars/{info_type}")
 def get_particulars(info_type : str):
@@ -42,8 +51,12 @@ def create_particulars(info_type : str, info : int):
     particulars[info_type] = info
     return {"info type": info_type}
 
-# creation of clothing list
-@app.get("/get-all-clothings/{clothing_id}")
+###########################
+#### CLOTHING DATABASE ####
+###########################
+
+# connected to db
+@app.get("/get-all-clothings/clothing{name}")
 async def get_clothings():
     response = await fetch_all_clothings()
     return response 
@@ -55,16 +68,27 @@ async def get_clothing_by_name(name: str):
     return response 
 
 # connected to db
-@app.post("/create-clothing/{clothing_id}", response_model=Clothing)
+@app.post("/create-clothing/clothing{name}", response_model=Clothing)
 async def create_clothing(clothing : Clothing):
     response = await create_one_clothing(clothing.dict())
     if response: return response
     raise HTTPException(400, "Something went wrong")
 
-@app.delete("/delete-clothing/{clothing_id}")
-def delete_clothing(clothing_id : int):
-    if clothing_id not in clothings:
-        return {"Error": "Clothing does not exist"}
+# @app.delete("/delete-clothing/{clothing_id}")
+# def delete_clothing(clothing_id : int):
+#     if clothing_id not in clothings:
+#         return {"Error": "Clothing does not exist"}
     
-    del clothings[clothing_id]
-    return {"Message": "Clothing deleted successfully"}
+#     del clothings[clothing_id]
+#     return {"Message": "Clothing deleted successfully"}
+
+
+###########################
+#### WEATHER  DATABASE ####
+###########################
+
+@app.post("/create-weather-data/weather{time}", response_model=WeatherData)
+async def create_weather_data(weather_data : WeatherData):
+    response = await create_one_weather_data(weather_data.dict())
+    if response: return response
+    raise HTTPException(400, "Something went wrong")

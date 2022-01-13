@@ -26,6 +26,12 @@ add C:\Program Files\MongoDB\Server\5.0\bin to windows environment variable
 run mongod --version
 if the relevant information shows, mongodb has been successfully installed
 
+mongosh (opens up the mongodb shell)
+
+## setting up mongodb compass
+(MongoDB Compass is a GUI for viewing the database)
+New Connection >> Fill in Connection Fields Manually >> Hostname (hostname: localhost, port: 27017)
+
 ## common errors
 ERROR:    Error loading ASGI app. Could not import module "main".
 Solution: cd backend before running uvicorn server
