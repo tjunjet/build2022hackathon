@@ -2,15 +2,17 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
-from pydantic import BaseModel
+from model import Clothing
 
 app = FastAPI()
 
 from database import (
+    fetch_all_clothings,
     fetch_one_clothing,
-    create_one_clothing
+    create_one_clothing,
 )
 
+# some middleware stuff, unsure if relevant
 origins = ['http://localhost:3000']
 
 app.add_middleware(
@@ -28,17 +30,6 @@ particulars = {
     "gender": { }
 }
 
-clothings = {
-    1: {
-        "name": "cmu hoodie",
-        "category": "hoodie"
-    }
-}
-
-class Clothing(BaseModel):
-    name : str
-    category : str
-
 # input of user's particulars
 @app.get("/get-particulars/{info_type}")
 def get_particulars(info_type : str):
@@ -52,9 +43,10 @@ def create_particulars(info_type : str, info : int):
     return {"info type": info_type}
 
 # creation of clothing list
-@app.get("/get-clothing/{clothing_id}")
-def get_clothing(clothing_id : int):
-    return clothings[clothing_id]
+@app.get("/get-all-clothings/{clothing_id}")
+async def get_clothings():
+    response = await fetch_all_clothings()
+    return response 
 
 # connected to db
 @app.get("/get-clothing-by-name/clothing{name}", response_model=Clothing)

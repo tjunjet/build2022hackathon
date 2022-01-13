@@ -25,3 +25,7 @@ add C:\Program Files\MongoDB\Server\5.0\bin to windows environment variable
 
 run mongod --version
 if the relevant information shows, mongodb has been successfully installed
+
+## common errors
+ERROR:    Error loading ASGI app. Could not import module "main".
+Solution: cd backend before running uvicorn server

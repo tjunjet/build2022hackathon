@@ -1,12 +1,15 @@
-from pydantic import BaseModel
+from model import Clothing
 import motor.motor_asyncio
 client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27017/')
 database = client["weather_app"]
 collection = database["clothing_list"]
 
-class Clothing(BaseModel):
-    name : str
-    category : str
+async def fetch_all_clothings():
+    all_clothings = []
+    cursor = collection.find({}) # find all items
+    async for item in cursor:
+        all_clothings.append(Clothing(**item))
+    return all_clothings
 
 async def fetch_one_clothing(name):
     item = await collection.find_one({"name": name})
