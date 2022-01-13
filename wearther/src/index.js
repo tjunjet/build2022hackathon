@@ -22,7 +22,7 @@ const urls = {
 };
 
 const apiKeys = {
-    openWeatherMapAPI: "8231ff01976f8b7d8b3dae0e02d8c1fa",
+    openWeatherMapAPI: "779894551edc39fd557720eea876ce84",
 };
 
 class App extends React.Component {
@@ -136,7 +136,29 @@ class App extends React.Component {
     //Parse data from openWeatherMap
     parseOpenWeatherMapData() {
         const response = this.state.weatherRawData.openWeatherMapAPI;
-        console.log(response); // TO DO
+        const temp = response.data.main.temp;
+        const tempMin = response.data.main.temp_min;
+        const tempMax = response.data.main.temp_max;
+        const tempFeelsLike = response.data.main.feels_like;
+        const humidity = response.data.main.humidity;
+        const windSpeed = response.data.wind.speed;
+        const conditionID = response.data.weather[0].id;
+        const conditionMain = response.data.weather[0].main;
+        const conditionDesc = response.data.weather[0].description;
+        this.setState({
+            temp: temp,
+            tempMin: tempMin,
+            tempMax: tempMax,
+            tempFeelsLike: tempFeelsLike,
+            humidity: humidity,
+            windSpeed: windSpeed,
+            conditionID: conditionID,
+            conditionMain: conditionMain,
+            conditionDesc: conditionDesc,
+        });
+
+
+        console.log(conditionMain); // TO DO
     }
 
     render() {
@@ -147,7 +169,7 @@ class App extends React.Component {
         this.getLocation();
 
         //Test
-        this.getWeather();
+        //this.getWeather();
 
         return (
             <div className="app ">
