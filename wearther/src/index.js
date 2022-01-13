@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import './bootstrap-5.1.3-dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+// import './bootstrap-5.1.3-dist/css/bootstrap.min.css';
 import './index.css';
 import { NewGarmentForm } from './components/NewGarmentForm'
 import { Introduction } from './components/Introduction'
@@ -212,6 +216,9 @@ class App extends React.Component {
         return (
             <div className="app ">
                 <MenuBar />
+                <Panel>
+                    
+                </Panel>
                 <Introduction />
                 <WeatherReport 
                     weather={this.state.weather}

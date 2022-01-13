@@ -11,18 +11,34 @@ export class GarmentsList extends React.Component {
     render() {
         const garmentsList = this.props.currentGarments.map((item) => {
             return(
-                <li key={item.id}>
-                    <p>id: {item.id}</p>
-                    <p>{item.customName}</p>
-                    <p>{item.garmentType}</p>
-                    <button onClick={() => this.handleRemove(item.id)}>Remove</button>
-                </li>
+                <tr key={item.id}>
+                    <td>{item.customName}</td>
+                    <td>{item.garmentType}</td>
+                    <td>
+                        <button 
+                            onClick={() => this.handleRemove(item.id)}
+                            className="btn btn-secondary"
+                        >
+                            Remove
+                        </button>
+                    </td>
+                </tr>
             );
         });
         return (
             <div className="garmentsList container">
                 <h2>Current Garments</h2>
-                <ul>{garmentsList}</ul>
+                <table className="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Custom Name</th>
+                            <th>Clothing Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {garmentsList}
+                    </tbody>
+                </table>
             </div>
         );
     }
