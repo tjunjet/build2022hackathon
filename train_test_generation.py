@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[2]:
 
 
 import numpy as np
@@ -12,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from datetime import date
 
 
-# In[2]:
+# In[3]:
 
 
 #Creating the dataset
@@ -50,7 +50,7 @@ output will be in the form of a boolean array with each index presenting differe
 """
 
 
-# In[3]:
+# In[4]:
 
 
 #smart generator for people's height, weight, age, sex
@@ -73,7 +73,7 @@ def peopledatagenerator():
 
 
 
-# In[4]:
+# In[5]:
 
 
 #cold resistance calculation
@@ -197,7 +197,7 @@ def coldresistance(sex, age, fatpercentage, BMI):
     return cold_resistance
 
 
-# In[5]:
+# In[6]:
 
 
 clothesmap = {
@@ -222,7 +222,7 @@ heatmap = {
 }
 
 
-# In[6]:
+# In[7]:
 
 
 def findlowestheatscore(map):
@@ -289,10 +289,12 @@ def predictusingheatscore(temperature, cold_resistance, heatmap, windspeed, prec
         
 
 
-# In[7]:
+# In[12]:
 
 
-def generateDataset(count, mode):
+#returns the features and output dataframes for ML
+def generateSmartDataset(count):
+
     from datetime import date
     data = []
     currentdate = date.today()
@@ -302,12 +304,8 @@ def generateDataset(count, mode):
         humidity = random.randint(0, 100)
         precipitation = random.randint(0, 100)
         windspeed = random.randint(0, 40) #mph
-        #age = random.randint(15, 60)
-        #weight = random.randint(40, 120) #kg
-        #height = random.randint(110, 200) #cm
-        #sex = random.randint(0,1) # 0:M 1:F
-
-
+        
+        
         sex, age, height, weight = peopledatagenerator()
 
         #fat percentage formula from
@@ -338,15 +336,140 @@ def generateDataset(count, mode):
     for article in clothesmap:
         df[article] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['cold_resistance'], heatmap,                                                                  row['windspeed'], row['precipitation'])[clothesmap[article]], axis = 1)
     
-    features = df[['temperature', 'humidity', 'precipitation', 'windspeed', 'age', 'weight', 'height', 'sex', 'fatpercentage', 'bmi', 'cold_resistance' ]]
-    output = df[clothesmap.keys()]
+    
+    return df
     
     
+    
+    
+
+
+# In[13]:
+
+
+#totally random data
+def generaterandomDataset(count):
+    from datetime import date
+    data = []
+    currentdate = date.today()
+    for i in range(count):
+    
+    #randomly generated user data
+        date = (currentdate - datetime.timedelta(i)).strftime("%d/%m/%Y") #display in day/month/year
+        temperature = random.randint(0, 45) - 20
+        humidity = random.randint(0, 100)
+        precipitation = random.randint(0, 100)
+        windspeed = random.randint(0, 40) #mph
+        age = random.randint(15, 60)
+        weight = random.randint(30, 120) #kg
+        height = random.randint(110, 200) #cm
+        sex = random.randint(0,1) # 0:M 1:F
+        
+        BMI = weight/(height**2)*10000
+        if sex == 0:
+            fatpercentage = (1.20 * BMI) + (0.23 * age) - 16.2
+
+        elif sex == 1:
+            fatpercentage = (1.20 * BMI) + (0.23 * age) - 5.4
+
+        #adjustment for negative fatpercentage
+        if fatpercentage < 0:
+            fatpercentage = 1
+
+        datapoint = (date, temperature, humidity, precipitation, windspeed, age, weight, height, sex, fatpercentage, BMI)
+        
+        data.append(datapoint)
+        
+        
+    columnstring = 'date,temperature,humidity,precipitation,windspeed,age,weight,height,sex,fatpercentage,bmi'
+    column = columnstring.split(',')
+    df = pd.DataFrame(data, columns = column)
+    
+    
+    df['cold_resistance'] = df.apply(lambda row : coldresistance(row['sex'], row['age'], row['fatpercentage'], row['bmi']), axis = 1)
+    
+    for article in clothesmap:
+        df[article] = -1
+        for ite in range(count):
+            df[article][ite] = bool(random.getrandbits(1))
+    
+    return df
+    
+
+
+# In[24]:
+
+
+test2 = generateSmartDataset(100)
+test2.size
+
+
+# In[25]:
+
+
+test = generaterandomDataset(100)
+test.head()
+
+
+# In[32]:
+
+
+def generatefinaldf(count, mode, proportion):
+
+    smartdf = generateSmartDataset(int(count/100*proportion))
+    randomdf = generaterandomDataset(int(count/100*(100-proportion)))
+    #ans1 = smartdf.size
+    #ans2 = randomdf.size
+    
+    #print(ans1, ans2)
+    #return None
+    final_df = pd.concat([smartdf, randomdf], ignore_index=True)
+    
+    features = final_df[['temperature', 'humidity', 'precipitation', 'windspeed', 'age', 'weight', 'height', 'sex', 'fatpercentage', 'bmi', 'cold_resistance' ]]
+    output = final_df[clothesmap.keys()]
     if mode == 'ML':
         return features, output
     else:
-        return df
-    
+        return final_df
+
+
+# In[33]:
+
+
+#df = generatefinaldf(10**5, "das", 95)
+
+
+# In[34]:
+
+
+#df.head()
+
+
+# In[37]:
+
+
+#df.tail()
+
+
+# In[38]:
+
+
+#features, output = generatefinaldf(10**5, "ML", 95)
+
+
+# In[39]:
+
+
+#features.tail()
+
+
+# In[40]:
+
+
+#output.tail()
+
+
+# In[ ]:
 
 
 
