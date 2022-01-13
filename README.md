@@ -32,6 +32,8 @@ mongosh (opens up the mongodb shell)
 (MongoDB Compass is a GUI for viewing the database)
 New Connection >> Fill in Connection Fields Manually >> Hostname (hostname: localhost, port: 27017)
 
+I'm not sure if the local database carries over (I assume not), but I've created a database called "weather_app", with two collections (sub-databases?) called "weather_data" and "clothing_list"
+
 ## common errors
 ERROR:    Error loading ASGI app. Could not import module "main".
 Solution: cd backend before running uvicorn server

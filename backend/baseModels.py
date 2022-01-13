@@ -12,3 +12,11 @@ class WeatherData(BaseModel):
     currHumidity : float
     currWind : float
     hourlyPop : float
+
+class ClothingSet(BaseModel):
+    thermals : bool
+    hoodie : bool
+    lightDown : bool
+    thickDown : bool
+    windbreaker : bool
+    umbrella : bool

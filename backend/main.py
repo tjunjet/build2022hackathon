@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
-from model import Clothing, WeatherData
+from baseModels import Clothing, WeatherData, ClothingSet
 
 app = FastAPI()
 
@@ -14,6 +14,10 @@ from clothing_database import (
 
 from weather_database import (
     create_one_weather_data
+)
+
+from predictionModel import (
+    predict_clothing
 )
 
 # some middleware stuff, unsure if relevant
@@ -31,7 +35,8 @@ particulars = {
     "age" : {  },
     "weight" : { },
     "height" : { },
-    "gender": { }
+    "gender": { },
+    "location": { }
 }
 
 
@@ -56,7 +61,7 @@ def create_particulars(info_type : str, info : int):
 ###########################
 
 # connected to db
-@app.get("/get-all-clothings/clothing{name}")
+@app.get("/get-all-clothings}")
 async def get_clothings():
     response = await fetch_all_clothings()
     return response 
@@ -92,3 +97,13 @@ async def create_weather_data(weather_data : WeatherData):
     response = await create_one_weather_data(weather_data.dict())
     if response: return response
     raise HTTPException(400, "Something went wrong")
+
+
+###########################
+#### ML PREDICTION     ####
+###########################
+
+@app.get("/predict-clothing-set", response_model=ClothingSet)
+async def get_clothing_set_prediction(): # question: what input?
+    response = await predict_clothing()
+    return response 
