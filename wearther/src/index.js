@@ -24,6 +24,10 @@ class App extends React.Component {
             clothes: Array(), //Save clothes as an array of objects
             nextGarmentID: 1,
             garmentTypes: garmentTypes,
+            coords: {
+                latitude: null,
+                longitude: null,
+            },
         };
     }
     
@@ -59,9 +63,30 @@ class App extends React.Component {
         axios.get(url).then((response) => {console.log(response)}); 
     }
 
+    //Get geolocation data
+    getLocation() {
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                //position.coords.latitude, position.coords.longitude
+                this.setState({
+                    coords: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    },
+                });
+            });
+        } else {
+            console.log("Geolocation is not available (check browser permissions?)")
+        }
+        return "hello";
+    }
+
     render() {
         //Test
         this.getTestData();
+
+        //Test
+        this.getLocation()
 
         return (
             <div className="app ">
@@ -75,6 +100,8 @@ class App extends React.Component {
                     garmentTypes={this.state.garmentTypes}
                 />
                 <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
+
+                
             </div>
         );
     }
