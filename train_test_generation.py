@@ -9,8 +9,6 @@ import pandas as pd
 import random
 import datetime
 from sklearn.model_selection import train_test_split
-import xgboost as xgb
-from xgboost import XGBClassifier
 from datetime import date
 
 
