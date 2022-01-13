@@ -18,11 +18,12 @@ const garmentTypes = Array(
 
 const urls = {
     // ...?lat={lat}&lon={lon}&appid={API key}
-    openWeatherMapAPI: "http://api.openweathermap.org/data/2.5/weather",
+    openWeatherMap1: "http://api.openweathermap.org/data/2.5/onecall", //One Call API, for getting all data except...
+    openWeatherMap2: "http://api.openweathermap.org/data/2.5/weather", //Regular API, for getting city name
 };
 
 const apiKeys = {
-    openWeatherMapAPI: "779894551edc39fd557720eea876ce84",
+    openWeatherMap: "779894551edc39fd557720eea876ce84",
 };
 
 class App extends React.Component {
@@ -40,7 +41,8 @@ class App extends React.Component {
                 city: null,
             },
             weatherRawData: {
-                openWeatherMapAPI: null,
+                openWeatherMap1: null,
+                openWeatherMap2: null,
             },
             weather: {
                 temp: null,
@@ -52,7 +54,9 @@ class App extends React.Component {
                 conditionID: null,
                 conditionMain: null,
                 conditionDesc: null,
+                precipitationProb: null,
             },
+            initialStartedUp: false,
         };
     }
     
@@ -82,12 +86,6 @@ class App extends React.Component {
         });
     }
 
-    //Testing HTTP request with Axios
-    getTestData() {
-        const url = 'https://api.weather.gov/points/39.7456,-97.0892';
-        axios.get(url).then((response) => {console.log(response)}); 
-    }
-
     //Get geolocation data
     getLocation() {
         if ('geolocation' in navigator) {
@@ -99,6 +97,8 @@ class App extends React.Component {
                         longitude: position.coords.longitude,
                     },
                 });
+                console.log("Coordinates of user obtained with Geolocation");
+                this.getWeather();
             });
         } else {
             console.log("Geolocation is not available (check browser permissions?)")
@@ -109,43 +109,62 @@ class App extends React.Component {
     //Get weather data
     getWeather() {
         if ((this.state.location.longitude) && (this.state.location.latitude)) {
-            //1. Try openWeatherMap
-            const url = this.state.urls.openWeatherMapAPI;
-            axios.get(url, {
+            //1. Get data from openWeatherMap One Call API
+            const url1 = this.state.urls.openWeatherMap1;
+            axios.get(url1, {
                 params: {
                     lat: this.state.location.latitude,
                     lon: this.state.location.longitude,
-                    appid: this.state.apiKeys.openWeatherMapAPI,
+                    appid: this.state.apiKeys.openWeatherMap,
                     units: "metric",
                 },
             })
             .then((response) => {
                 //Save raw data (JSON) into state, then call parser function
-                this.state.weatherRawData.openWeatherMapAPI = response;
-                this.parseOpenWeatherMapData();
-                return;
+                this.state.weatherRawData.openWeatherMap1 = response;
+                this.parseOpenWeatherMapData1();
+                console.log("1st call to openWeatherMap One Call API");
             })
             .catch((error) => {
                 console.log(error);
             });
-            //2. Try weather.gov
-            //TO DO
+            //2. Get data (city name) from openWeatherMap regular API
+            const url2 = this.state.urls.openWeatherMap2;
+            axios.get(url2, {
+                params: {
+                    lat: this.state.location.latitude,
+                    lon: this.state.location.longitude,
+                    appid: this.state.apiKeys.openWeatherMap,
+                    units: "metric",
+                },
+            })
+            .then((response) => {
+                //Save raw data (JSON) into state, then call parser function
+                this.state.weatherRawData.openWeatherMap2 = response;
+                this.parseOpenWeatherMapData2();
+                console.log("2nd call to openWeatherMap regular API");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
         }
     }
 
-    //Parse data from openWeatherMap
-    parseOpenWeatherMapData() {
-        const response = this.state.weatherRawData.openWeatherMapAPI;
-        const temp = response.data.main.temp;
-        const tempMin = response.data.main.temp_min;
-        const tempMax = response.data.main.temp_max;
-        const tempFeelsLike = response.data.main.feels_like;
-        const humidity = response.data.main.humidity;
-        const windSpeed = response.data.wind.speed;
-        const conditionID = response.data.weather[0].id;
-        const conditionMain = response.data.weather[0].main;
-        const conditionDesc = response.data.weather[0].description;
-        const city = response.data.name;
+    //Parse data from first API call (openWeatherMap One Call API)
+    parseOpenWeatherMapData1() {
+        //Data from first API call (openWeatherMap One Call API)
+        const response1 = this.state.weatherRawData.openWeatherMap1;
+        const temp = response1.data.current.temp;
+        const tempMin = response1.data.daily[0].temp.min;
+        const tempMax = response1.data.daily[0].temp.max;
+        const tempFeelsLike = response1.data.current.feels_like;
+        const humidity = response1.data.current.humidity;
+        const windSpeed = response1.data.current.wind_speed;
+        const conditionID = response1.data.daily[0].weather[0].id;
+        const conditionMain = response1.data.daily[0].weather[0].main;
+        const conditionDesc = response1.data.daily[0].weather[0].description;
+        const precipitationProb = response1.data.daily[0].pop;
+        //Store data into temporary "weather" object
         const weather = {
             temp: temp,
             tempMin: tempMin,
@@ -156,32 +175,47 @@ class App extends React.Component {
             conditionID: conditionID,
             conditionMain: conditionMain,
             conditionDesc: conditionDesc,
+            precipitationProb: precipitationProb,
         };
-        const location = Object.assign({}, this.state.location);
-        location.city = city;
+        //Update state
         this.setState({
             weather: weather,
-            location: location,
         });
-
-
-        console.log(this.state.location.city); // TO DO
     }
 
+    parseOpenWeatherMapData2() {
+        //Data from second API call (openWeatherMap regular API)
+        const response2 = this.state.weatherRawData.openWeatherMap2;
+        const city = response2.data.name;
+        //Store data into temporary "location" object
+        const location = Object.assign({}, this.state.location);
+        location.city = city;
+        //Update state
+        this.setState({
+            location: location,
+        });
+    }
+
+    //Wrapper function to get new location and weather data
+    //(.getLocation() calls .getWeather() upon successful data received)
     refreshLocationAndWeather() {
         this.getLocation();
-        this.getWeather();
     }
 
     render() {
-        //Test
-        //this.getTestData();
 
         //Test
-        this.getLocation();
+        //this.getLocation();
 
         //Test
         //this.getWeather();
+
+        //Run code on initial load of app
+        if (! this.state.initialStartedUp) {
+            console.log("App initial load up. Getting location and weather data");
+            this.refreshLocationAndWeather();
+            this.state.initialStartedUp = true;
+        }
 
         return (
             <div className="app ">
