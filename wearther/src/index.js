@@ -60,12 +60,7 @@ class App extends React.Component {
         };
     }
     
-    // Adding to & removing from list of available clothes
-    /*
-    Send JSON data to backend via fetch(): 
-    https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-    (refer to Uploading JSON data section)
-    */
+    // Add to list of available clothes
     addGarment(customName, garmentType) {
         const clothes = this.state.clothes;
         clothes.push({
@@ -78,6 +73,8 @@ class App extends React.Component {
             nextGarmentID: (this.state.nextGarmentID + 1),
         });
     }
+    
+    // Remove from list of available clothes
     removeGarment(id) {
         console.log("removeGarment called on " + id)
         const clothes = this.state.clothes.filter((item) => {return item.id !== id;});
@@ -183,6 +180,7 @@ class App extends React.Component {
         });
     }
 
+    //Parse data from second API call (openWeatherMap regular API)
     parseOpenWeatherMapData2() {
         //Data from second API call (openWeatherMap regular API)
         const response2 = this.state.weatherRawData.openWeatherMap2;
@@ -203,13 +201,6 @@ class App extends React.Component {
     }
 
     render() {
-
-        //Test
-        //this.getLocation();
-
-        //Test
-        //this.getWeather();
-
         //Run code on initial load of app
         if (! this.state.initialStartedUp) {
             console.log("App initial load up. Getting location and weather data");
