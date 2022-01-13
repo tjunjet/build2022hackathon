@@ -168,6 +168,11 @@ class App extends React.Component {
         console.log(this.state.location.city); // TO DO
     }
 
+    refreshLocationAndWeather() {
+        this.getLocation();
+        this.getWeather();
+    }
+
     render() {
         //Test
         //this.getTestData();
@@ -187,6 +192,7 @@ class App extends React.Component {
                 <WeatherReport 
                     weather={this.state.weather}
                     location={this.state.location}
+                    onSubmit={() => this.refreshLocationAndWeather()}
                 />
                 <NewGarmentForm 
                     onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}

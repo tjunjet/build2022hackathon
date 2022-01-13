@@ -2,6 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 export class WeatherReport extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    handleSubmit(event) {
+        event.preventDefault();
+        this.props.onSubmit();
+    }
     render() {
         return (
             <div className="weatherReport">
@@ -22,6 +30,9 @@ export class WeatherReport extends React.Component {
                         <b>Wind speed: </b>8 mph
                     </p>
                 </div>
+                <form onSubmit={this.handleSubmit}>
+                    <button type="submit">Refresh</button>
+                </form>
             </div>
         );
     }
