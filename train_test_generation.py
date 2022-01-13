@@ -294,7 +294,7 @@ def predictusingheatscore(temperature, cold_resistance, heatmap, windspeed, prec
 # In[7]:
 
 
-def generateDataset(count):
+def generateDataset(count, mode):
     from datetime import date
     data = []
     currentdate = date.today()
@@ -342,7 +342,12 @@ def generateDataset(count):
     
     features = df[['temperature', 'humidity', 'precipitation', 'windspeed', 'age', 'weight', 'height', 'sex', 'fatpercentage', 'bmi', 'cold_resistance' ]]
     output = df[clothesmap.keys()]
-    return features, output
+    
+    
+    if mode == 'ML':
+        return features, output
+    else:
+        return df
     
 
 
