@@ -8,7 +8,6 @@ import { Introduction } from './components/Introduction'
 import { WeatherReport } from './components/WeatherReport'
 import { GarmentsList } from './components/GarmentsList'
 
-// To encapsulate in a class (probably)
 const garmentTypes = Array(
     {name: "T Shirt",               value: "tshirt"},
     {name: "Thermals",              value: "thermals"},
@@ -17,6 +16,15 @@ const garmentTypes = Array(
     {name: "Windbreaker Shell",     value: "windbreakerShell"},
 );
 
+const urls = {
+    // ...?lat={lat}&lon={lon}&appid={API key}
+    openWeatherMapAPI: "http://api.openweathermap.org/data/2.5/weather",
+};
+
+const apiKeys = {
+    openWeatherMapAPI: "8231ff01976f8b7d8b3dae0e02d8c1fa",
+};
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -24,9 +32,26 @@ class App extends React.Component {
             clothes: Array(), //Save clothes as an array of objects
             nextGarmentID: 1,
             garmentTypes: garmentTypes,
-            coords: {
+            urls: urls,
+            apiKeys: apiKeys,
+            location: {
                 latitude: null,
                 longitude: null,
+                city: null,
+            },
+            weatherRawData: {
+                openWeatherMapAPI: null,
+            },
+            weather: {
+                temp: null,
+                tempMin: null,
+                tempMax: null,
+                tempFeelsLike: null,
+                humidity: null,
+                windSpeed: null,
+                conditionID: null,
+                conditionMain: null,
+                conditionDesc: null,
             },
         };
     }
@@ -69,7 +94,7 @@ class App extends React.Component {
             navigator.geolocation.getCurrentPosition((position) => {
                 //position.coords.latitude, position.coords.longitude
                 this.setState({
-                    coords: {
+                    location: {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
                     },
@@ -81,12 +106,48 @@ class App extends React.Component {
         return "hello";
     }
 
+    //Get weather data
+    getWeather() {
+        if ((this.state.location.longitude) && (this.state.location.latitude)) {
+            //1. Try openWeatherMap
+            const url = this.state.urls.openWeatherMapAPI;
+            axios.get(url, {
+                params: {
+                    lat: this.state.location.latitude,
+                    lon: this.state.location.longitude,
+                    appid: this.state.apiKeys.openWeatherMapAPI,
+                    units: "metric",
+                },
+            })
+            .then((response) => {
+                //Save raw data (JSON) into state, then call parser function
+                this.state.weatherRawData.openWeatherMapAPI = response;
+                this.parseOpenWeatherMapData();
+                return;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+            //2. Try weather.gov
+            //TO DO
+        }
+    }
+
+    //Parse data from openWeatherMap
+    parseOpenWeatherMapData() {
+        const response = this.state.weatherRawData.openWeatherMapAPI;
+        console.log(response); // TO DO
+    }
+
     render() {
         //Test
-        this.getTestData();
+        //this.getTestData();
 
         //Test
-        this.getLocation()
+        this.getLocation();
+
+        //Test
+        this.getWeather();
 
         return (
             <div className="app ">
