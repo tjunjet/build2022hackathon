@@ -1,5 +1,6 @@
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
+from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from baseModels import Clothing, WeatherData, ClothingSet
@@ -107,3 +108,18 @@ async def create_weather_data(weather_data : WeatherData):
 async def get_clothing_set_prediction(): # question: what input?
     response = await predict_clothing()
     return response 
+
+
+
+###########################
+#### AUTHENTICATION    ####
+###########################
+
+
+app = FastAPI()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+@app.get("/items/")
+async def read_items(token: str = Depends(oauth2_scheme)):
+    return {"token": token}

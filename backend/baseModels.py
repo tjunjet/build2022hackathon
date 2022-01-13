@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 # base mode for clothings
 class Clothing(BaseModel):
@@ -20,3 +21,7 @@ class ClothingSet(BaseModel):
     thickDown : bool
     windbreaker : bool
     umbrella : bool
+
+class User(BaseModel):
+    username : str
+    disabled: Optional[bool] = None
