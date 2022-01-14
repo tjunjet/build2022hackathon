@@ -265,9 +265,6 @@ def predictusingheatscore(temperature, cold_resistance, heatmap, windspeed, prec
     else:
         result = []
         
-        #we want to get the comparison insulation to classify for too hot too cold later
-        comparison_insulation = insulation_required
-        
         
         while insulation_required > 0:
             smallest_difference = 100000
@@ -289,20 +286,8 @@ def predictusingheatscore(temperature, cold_resistance, heatmap, windspeed, prec
             
         for ite in result:
             prediction[clothesmap[ite]] = True
-            
         
-        clothesindex = list(clothesmap.keys())
-            
-        heatprovidedbyclothes = 0    
-        for index in range(len(heatmap)):
-            if prediction[index] == True:
-                heatprovidedbyclothes += heatmap[clothesindex[index]]
-        
-        #difference in expectation of insulation required and what is really given
-        differenceinexpectation = comparison_insulation - heatprovidedbyclothes
-        
-        #place difference at back
-        #prediction[-1] = differenceinexpectation
+
         
         return prediction
         
@@ -354,31 +339,6 @@ def getdifference(temperature, cold_resistance, heatmap, windspeed, precipitatio
         return differenceinexpectation
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-print(predictusingheatscore(-15, 20, heatmap, 10, 10))
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-print(getdifference(-5, 20, heatmap, 10, 10))
-
-
-# In[ ]:
 
 
 #returns the features and output dataframes for ML
@@ -421,48 +381,17 @@ def generateSmartDataset(count):
     
     
     df['cold_resistance'] = df.apply(lambda row : coldresistance(row['sex'], row['age'], row['fatpercentage'], row['bmi']), axis = 1)
-    
-    #clothesmapkeys = list(clothesmap.keys())
-    
-    #for article in clothesmap:
-       #df[article] = 'Hello'
-    
-    """
-    for _ , row in df.iterrows():
-        prediction, difference = predictusingheatscore(row['temperature'], row['cold_resistance'], heatmap,\
-                                                                  row['windspeed'], row['precipitation'])
-        
-        #print(prediction)
-        for i in range(len(prediction)):
-            if prediction[i] == True:
-                df[clothesmapkeys[i]][row] = 1
-            else:
-                df[clothesmapkeys[i]][row] = 0
-                
-        df['scoring_difference'][row] = difference
-    """          
+         
     
     for article in clothesmap:
         df[article] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['cold_resistance'], heatmap,row['windspeed'], row['precipitation'])[clothesmap[article]], axis = 1)
-    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap,                                                              row['windspeed'], row['precipitation']), axis = 1)
-    #df['scoring_difference'].apply(lambda row : 0.0 if row == False)
-    #df['scoring_difference'] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['cold_resistance'], heatmap,\
-                                                                  #row['windspeed'], row['precipitation'])[-1], axis = 1)
+    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap, row['windspeed'], row['precipitation']), axis = 1)
+
     
     return df
     
     
     
-    
-
-
-# In[ ]:
-
-
-df_2 = generateSmartDataset(100000)
-
-
-# In[ ]:
 
 
 #totally random data
@@ -512,36 +441,10 @@ def generaterandomDataset(count):
             df[article][ite] = bool(random.getrandbits(1))
             
             
-            
-    
-            
-    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap,                                                                  row['windspeed'], row['precipitation']), axis = 1)
+    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap, row['windspeed'], row['precipitation']), axis = 1)
     
     return df
     
-
-
-# In[ ]:
-
-
-test2 = generateSmartDataset(100)
-test2.size
-
-
-# In[ ]:
-
-
-test2.head()
-
-
-# In[ ]:
-
-
-test = generaterandomDataset(100)
-test.head()
-
-
-# In[ ]:
 
 
 def generatefinaldf(count, mode, proportion):
@@ -562,7 +465,7 @@ def generatefinaldf(count, mode, proportion):
     else:
         return final_df
 
-
+#debugging
 # In[ ]:
 
 
