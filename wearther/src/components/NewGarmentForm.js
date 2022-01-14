@@ -36,7 +36,9 @@ export class NewGarmentForm extends React.Component {
         });
     }
     handleReset(event) {
-        // TO DO
+        this.setState({
+            customNameValue: "",
+        });
     }
     render() {
         const garmentOptions = this.props.garmentTypes.map((item) => {
