@@ -216,21 +216,23 @@ class App extends React.Component {
         return (
             <div className="app ">
                 <MenuBar />
-                <Panel>
-                    
-                </Panel>
-                <Introduction />
-                <WeatherReport 
-                    weather={this.state.weather}
-                    location={this.state.location}
-                    onSubmit={() => this.refreshLocationAndWeather()}
-                />
-                <NewGarmentForm 
-                    onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
-                    garmentTypes={this.state.garmentTypes}
-                />
-                <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
+                <div className="row justify-content-center">
+                    <div className="col-8">
+                        <Introduction />
+                        <WeatherReport 
+                            weather={this.state.weather}
+                            location={this.state.location}
+                            onSubmit={() => this.refreshLocationAndWeather()}
+                        />
+                        <NewGarmentForm 
+                            onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
+                            garmentTypes={this.state.garmentTypes}
+                        />
+                    <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
 
+                    </div>
+                </div>
+                
                 
             </div>
         );

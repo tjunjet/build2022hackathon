@@ -12,7 +12,7 @@ export class WeatherReport extends React.Component {
     }
     render() {
         return (
-            <div className="weatherReport container">
+            <div className="weatherReport container border">
                 <h2>
                     Weather Report
                 </h2>

@@ -38,7 +38,7 @@ export class NewGarmentForm extends React.Component {
         });
         
         return(
-            <div className="newGarmentForm container mb-3">
+            <div className="newGarmentForm container mb-3 border">
                 <h2>Add to Wardrobe</h2>
                 <form onSubmit={this.handleSubmit}>
                     <div className="row">
