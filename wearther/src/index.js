@@ -13,6 +13,7 @@ import { WeatherReport } from './components/WeatherReport'
 import { GarmentsList } from './components/GarmentsList'
 import { MenuBar } from './components/MenuBar'
 import { PersonalDetailsForm } from './components/PersonalDetailsForm'
+import { WhatToWear } from './components/WhatToWear'
 
 const garmentTypes = Array(
     {name: "T Shirt",               value: "tshirt"},
@@ -223,31 +224,24 @@ class App extends React.Component {
                         <Introduction />
                         <div className="row">
                             <div className="col-md-6">
+                                {/*Left column*/}
+                                <WhatToWear />
+                                <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
+                            </div>
+                            <div className="col-md-6">
+                                {/*Right column*/}
                                 <WeatherReport 
                                     weather={this.state.weather}
                                     location={this.state.location}
                                     onSubmit={() => this.refreshLocationAndWeather()}
                                 />
-                            </div>
-                            <div className="col-md-6">
                                 <PersonalDetailsForm />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-6">
                                 <NewGarmentForm 
                                     onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
                                     garmentTypes={this.state.garmentTypes}
                                 />
                             </div>
-                            <div className="col-md-6">
-                                <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
-
-                            </div>
                         </div>
-
-                        
-                    
                     </div>
                 </div>
                 
