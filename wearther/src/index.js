@@ -63,6 +63,15 @@ class App extends React.Component {
                 conditionDesc: null,
                 precipitationProb: null,
             },
+            userDetails: {
+                sex: null,
+                age: null,
+                height: null,
+                weight: null,
+                bmi: null,
+                bodyFatPercentage: null,
+                coldTolerance: null,
+            },
             initialStartedUp: false,
         };
     }
