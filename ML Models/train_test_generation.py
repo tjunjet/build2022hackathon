@@ -428,7 +428,6 @@ def generateSmartDataset(count):
     column = columnstring.split(',')
     df = pd.DataFrame(data, columns = column)
     
-    print(df.apply(lambda row : coldresistance(row['sex'], row['age'], row['fatpercentage'], row['bmi']), axis = 1))
     df['cold_resistance'] = df.apply(lambda row : coldresistance(row['sex'], row['age'], row['fatpercentage'], row['bmi']), axis = 1)
     
     
@@ -452,15 +451,15 @@ def generateSmartDataset(count):
         df['scoring_difference'][row] = difference
     """          
     
+    # newly added adjusted cold resistance
+    df['adjusted_cold_resistance'] = (df['cold_resistance'] * (df['preference_factor']/100))
+    
     for article in clothesmap:
-        df[article] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['cold_resistance'], heatmap,row['windspeed'], row['precipitation'])[clothesmap[article]], axis = 1)
-    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap,                                                              row['windspeed'], row['precipitation']), axis = 1)
+        df[article] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['adjusted_cold_resistance'], heatmap,row['windspeed'], row['precipitation'])[clothesmap[article]], axis = 1)
+    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['adjusted_cold_resistance'], heatmap,                                                              row['windspeed'], row['precipitation']), axis = 1)
     #df['scoring_difference'].apply(lambda row : 0.0 if row == False)
     #df['scoring_difference'] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['cold_resistance'], heatmap,\
                                                                   #row['windspeed'], row['precipitation'])[-1], axis = 1)
-    
-    # newly added adjusted cold resistance
-    df['adjusted_cold_resistance'] = (df['cold_resistance'] * (df['preference_factor']/100))
     
     # newly added user_feedback
     df['user_feedback'] = df.apply(lambda row : getUserFeedback(row['scoring_difference']), axis = 1)
@@ -526,10 +525,10 @@ def generaterandomDataset(count):
         for ite in range(count):
             df[article][ite] = bool(random.getrandbits(1))
     
-    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap,                                                                  row['windspeed'], row['precipitation']), axis = 1)
-    
     # newly added adjusted cold resistance
     df['adjusted_cold_resistance'] = (df['cold_resistance'] * (df['preference_factor']/100))
+    
+    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['adjusted_cold_resistance'], heatmap,                                                                  row['windspeed'], row['precipitation']), axis = 1)
     
     # newly added user_feedback
     df['user_feedback'] = df.apply(lambda row : getUserFeedback(row['scoring_difference']), axis = 1)
@@ -564,19 +563,15 @@ test.head()
 def generatefinaldf(count, mode, proportion):
 
     smartdf = generateSmartDataset(int(count/100*proportion))
-    print("after smartdf")
     randomdf = generaterandomDataset(int(count/100*(100-proportion)))
     #ans1 = smartdf.size
     #ans2 = randomdf.size
-    print("here")
     #print(ans1, ans2)
     #return None
     final_df = pd.concat([smartdf, randomdf], ignore_index=True)
-    print("here 2")
     features = final_df[['temperature', 'humidity', 'precipitation', 'windspeed', 'age', 'weight', 'height', 'sex', 'fatpercentage', 'bmi', 'cold_resistance', 'scoring_difference', 'adjusted_cold_resistance','preference_factor']]
               
     # output = final_df[clothesmap.keys()]
-    print("here 3")
     output = final_df[['user_feedback']]
     
     if mode == 'ML':
@@ -584,8 +579,6 @@ def generatefinaldf(count, mode, proportion):
     else:
         return final_df
 
-print(generatefinaldf(1000, "ML", 0.5))
-print("done")
 # In[ ]:
 
 
