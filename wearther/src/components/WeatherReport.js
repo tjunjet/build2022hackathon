@@ -12,24 +12,33 @@ export class WeatherReport extends React.Component {
     }
     render() {
         return (
-            <div className="weatherReport container border">
+            <div className="weatherReport container border pt-2 pb-3">
                 <h2>
-                    Weather Report
+                    Local Weather
                 </h2>
-                <p>
-                    <b>Your location: </b>{this.props.location.city} ({this.props.location.latitude}, {this.props.location.longitude})
-                </p>
-                <p>
-                    <b>Temperature: </b>{this.props.weather.temp} deg C
-                </p>
-                <p>
-                    <b>Precipitation: </b>{this.props.weather.precipitationProb}% chance of rain
-                </p>
-                <p>
-                    <b>Wind speed: </b>{this.props.weather.windSpeed}
-                </p>
+                <ul className="list-unstyled">
+                    <li>
+                        <b>Location: </b> 
+                        <span>{this.props.location.city} </span>
+                        <span className="text-muted">({this.props.location.latitude}, {this.props.location.longitude})</span>
+                    </li>
+                    <li>
+                        <b>Temperature: </b>
+                        <span>{this.props.weather.temp} &deg;C </span>
+                        <span className="text-muted">({this.props.weather.tempMin} - {this.props.weather.tempMax})</span>
+                    </li>
+                    <li>
+                        <b>Rain/Snow: </b>{this.props.weather.precipitationProb}% chance
+                    </li>
+                    <li>
+                        <b>Wind speed: </b>{this.props.weather.windSpeed} mph
+                    </li>
+                    <li>
+                        <b>Humidity: </b>{this.props.weather.humidity}%
+                    </li>
+                </ul>
                 <form onSubmit={this.handleSubmit}>
-                    <button type="submit">Refresh</button>
+                    <button type="submit" className="btn btn-secondary">Refresh</button>
                 </form>
             </div>
         );

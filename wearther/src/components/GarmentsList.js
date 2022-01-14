@@ -17,7 +17,7 @@ export class GarmentsList extends React.Component {
                     <td>
                         <button 
                             onClick={() => this.handleRemove(item.id)}
-                            className="btn btn-secondary"
+                            className="btn btn-secondary btn-sm"
                         >
                             Remove
                         </button>
@@ -26,8 +26,8 @@ export class GarmentsList extends React.Component {
             );
         });
         return (
-            <div className="garmentsList container">
-                <h2>Current Garments</h2>
+            <div className="garmentsList container border pt-2">
+                <h2>My Wardrobe</h2>
                 <table className="table table-striped table-hover">
                     <thead>
                         <tr>

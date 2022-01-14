@@ -12,6 +12,7 @@ import { Introduction } from './components/Introduction'
 import { WeatherReport } from './components/WeatherReport'
 import { GarmentsList } from './components/GarmentsList'
 import { MenuBar } from './components/MenuBar'
+import { PersonalDetailsForm } from './components/PersonalDetailsForm'
 
 const garmentTypes = Array(
     {name: "T Shirt",               value: "tshirt"},
@@ -156,12 +157,12 @@ class App extends React.Component {
     parseOpenWeatherMapData1() {
         //Data from first API call (openWeatherMap One Call API)
         const response1 = this.state.weatherRawData.openWeatherMap1;
-        const temp = response1.data.current.temp;
-        const tempMin = response1.data.daily[0].temp.min;
-        const tempMax = response1.data.daily[0].temp.max;
+        const temp = Math.round(response1.data.current.temp);
+        const tempMin = Math.round(response1.data.daily[0].temp.min);
+        const tempMax = Math.round(response1.data.daily[0].temp.max);
         const tempFeelsLike = response1.data.current.feels_like;
         const humidity = response1.data.current.humidity;
-        const windSpeed = response1.data.current.wind_speed;
+        const windSpeed = Math.round(2.23694 * response1.data.current.wind_speed);
         const conditionID = response1.data.daily[0].weather[0].id;
         const conditionMain = response1.data.daily[0].weather[0].main;
         const conditionDesc = response1.data.daily[0].weather[0].description;
@@ -218,18 +219,35 @@ class App extends React.Component {
                 <MenuBar />
                 <div className="row justify-content-center">
                     <div className="col-8">
+                        {/*Page content inside here*/}
                         <Introduction />
-                        <WeatherReport 
-                            weather={this.state.weather}
-                            location={this.state.location}
-                            onSubmit={() => this.refreshLocationAndWeather()}
-                        />
-                        <NewGarmentForm 
-                            onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
-                            garmentTypes={this.state.garmentTypes}
-                        />
-                    <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <WeatherReport 
+                                    weather={this.state.weather}
+                                    location={this.state.location}
+                                    onSubmit={() => this.refreshLocationAndWeather()}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <PersonalDetailsForm />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <NewGarmentForm 
+                                    onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
+                                    garmentTypes={this.state.garmentTypes}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
 
+                            </div>
+                        </div>
+
+                        
+                    
                     </div>
                 </div>
                 

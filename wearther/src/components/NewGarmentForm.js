@@ -38,13 +38,13 @@ export class NewGarmentForm extends React.Component {
         });
         
         return(
-            <div className="newGarmentForm container mb-3 border">
+            <div className="newGarmentForm container pt-2 pb-3 border">
                 <h2>Add to Wardrobe</h2>
                 <form onSubmit={this.handleSubmit}>
                     <div className="row">
                         <div className="col">
                             <div className="form-group">
-                                <label className="mb-2">Custom Name</label>
+                                <label className="mb-2">Custom Name (optional)</label>
                                 <input 
                                     type="text" 
                                     id="customName" 
@@ -52,7 +52,7 @@ export class NewGarmentForm extends React.Component {
                                     value={this.state.customNameValue} 
                                     onChange={this.handleChange}
                                     className="form-control"
-                                    placeholder="Add a custom name (optional)"
+                                    placeholder="Custom Name"
                                 />
                             </div>
                         </div>
@@ -72,8 +72,8 @@ export class NewGarmentForm extends React.Component {
                         </div>  
                     </div>
                     <div className="form-group">
-                        <button type="submit" className="btn btn-secondary mt-2">Add</button>
-                        <button type="reset" className="btn btn-default mt-2">Reset</button>
+                        <button type="submit" className="btn btn-secondary mt-3">Add</button>
+                        <button type="reset" className="btn btn-default mt-3">Reset</button>
                     </div>
                 </form>
             </div>
