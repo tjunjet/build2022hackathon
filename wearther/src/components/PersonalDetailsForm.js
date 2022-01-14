@@ -35,6 +35,28 @@ export class PersonalDetailsForm extends React.Component {
             bodyFatPercentageValue: event.target.value,
         });
     }
+    handleSubmit(event) {
+        event.preventDefault();
+        alert("flkdakfljakajlfjklafdjkl;dfs")
+        if (
+            event.target.sex.value === "default" &&
+            event.target.age.value === "" &&
+            event.target.age.height === "" &&
+            // TO DO
+        ) {
+            // TO DO (what to do if no fields are filled up)
+        }
+        /*
+        FROM NEW GARMENT FORM
+        if (event.target.garmentType.value === "default") {
+            return;
+        }
+        this.props.onSubmit(event.target.customName.value, event.target.garmentType.value);
+        this.setState({
+            customNameValue: "",
+        });
+        */
+    }
 
     render() {
         return(
