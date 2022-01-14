@@ -8,10 +8,12 @@ export class PersonalDetailsForm extends React.Component {
             ageValue: "",
             heightValue: "",
             weightValue: "",
+            bodyFatPercentageValue: "",
         };
         this.handleChangeAge = this.handleChangeAge.bind(this);
         this.handleChangeHeight = this.handleChangeHeight.bind(this);
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
+        this.handleChangeBodyFatPercentage = this.handleChangeBodyFatPercentage.bind(this);
     }
     handleChangeAge(event) {
         this.setState({
@@ -28,6 +30,11 @@ export class PersonalDetailsForm extends React.Component {
             weightValue: event.target.value,
         });
     }
+    handleChangeBodyFatPercentage(event) {
+        this.setState({
+            bodyFatPercentageValue: event.target.value,
+        });
+    }
 
     render() {
         return(
@@ -35,16 +42,17 @@ export class PersonalDetailsForm extends React.Component {
                 <h2>Personal Info</h2>
                 <form onSubmit={this.handleSubmit}>
                     {/*First row of form fields*/}
-                    <div className="row">
+                    <div className="row mt-3">
                         <div className="col">
                             <div className="form-group">
+                                <label className="mb-2">Sex</label>
                                 <select 
                                     id="sex" 
                                     name="sex"
                                     className="form-control"
                                     defaultValue="default"
                                 >
-                                    <option value="default" disabled>Sex</option>
+                                    <option value="default" disabled>Select</option>
                                     <option value="m">Male</option>
                                     <option value="f">Female</option>
                                 </select>
@@ -52,6 +60,7 @@ export class PersonalDetailsForm extends React.Component {
                         </div>
                         <div className="col">
                             <div className="form-group">
+                                <label className="mb-2">Age</label>
                                 <input 
                                     type="text" 
                                     id="age" 
@@ -59,12 +68,13 @@ export class PersonalDetailsForm extends React.Component {
                                     value={this.state.ageValue} 
                                     onChange={this.handleChangeAge}
                                     className="form-control"
-                                    placeholder="Age"
+                                    placeholder="Years"
                                 />
                             </div>
                         </div>
                         <div className="col">
                             <div className="form-group">
+                                <label className="mb-2">Height</label>
                                 <input 
                                     type="text" 
                                     id="height" 
@@ -72,12 +82,13 @@ export class PersonalDetailsForm extends React.Component {
                                     value={this.state.heightValue} 
                                     onChange={this.handleChangeHeight}
                                     className="form-control"
-                                    placeholder="Height"
+                                    placeholder="cm"
                                 />
                             </div>
                         </div>
                         <div className="col">
                             <div className="form-group">
+                                <label className="mb-2">Weight</label>
                                 <input 
                                     type="text" 
                                     id="weight" 
@@ -85,33 +96,48 @@ export class PersonalDetailsForm extends React.Component {
                                     value={this.state.weightValue} 
                                     onChange={this.handleChangeWeight}
                                     className="form-control"
-                                    placeholder="Weight"
+                                    placeholder="kg"
                                 />
                             </div>
                         </div>  
                     </div>
                     {/*Second row of form fields*/}
-                    <div className="row">
-                        
-                        {/*TO DO*/}
+                    <div className="row mt-3">
                         <div className="col">
                             <div className="form-group">
+                                <label className="mb-2">Body Fat (optional)</label>
                                 <input 
                                     type="text" 
-                                    id="weight" 
-                                    name="weight" 
-                                    value={this.state.weightValue} 
-                                    onChange={this.handleChangeWeight}
+                                    id="bodyFatPercentage" 
+                                    name="bodyFatPercentage" 
+                                    value={this.state.bodyFatPercentageValue} 
+                                    onChange={this.handleChangeBodyFatPercentage}
                                     className="form-control"
-                                    placeholder="Weight"
+                                    placeholder="%"
                                 />
                             </div>
                         </div>
-
-
+                        <div className="col">
+                            <div className="form-group">
+                                <label className="mb-2">Cold Tolerance (1-5)</label>
+                                <select 
+                                    id="coldTolerance" 
+                                    name="coldTolerance"
+                                    className="form-control"
+                                    defaultValue="default"
+                                >
+                                    <option value="default" disabled>Select</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div className="form-group">
-                        <button type="submit" className="btn btn-secondary mt-3">Add</button>
+                        <button type="submit" className="btn btn-secondary mt-3">Submit</button>
                         <button type="reset" className="btn btn-default mt-3">Reset</button>
                     </div>
                 </form>
