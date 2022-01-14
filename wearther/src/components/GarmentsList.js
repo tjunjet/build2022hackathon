@@ -12,10 +12,18 @@ class TableContents extends React.Component {
             );
         } else {
             const garmentsList = this.props.currentGarments.map((item) => {
+                var garmentTypeReadable = "";
+                // Get readable Garment Type
+                for (var i in this.props.garmentTypes) {
+                    if (this.props.garmentTypes[i].value === item.garmentType) {
+                        garmentTypeReadable = this.props.garmentTypes[i].name;
+                    }
+                }
+                // No Custom Name given by user (just display Garment Type)
                 if (item.customName == "") {
                     return(
                         <tr key={item.id}>
-                            <td className="align-middle">{item.garmentType}</td>
+                            <td className="align-middle">{garmentTypeReadable}</td>
                             <td>
                                 <button 
                                     className="btn btn-secondary btn-sm"
@@ -26,10 +34,11 @@ class TableContents extends React.Component {
                             </td>
                         </tr>
                     );
+                // User has given a Custom Name (display Garment Type in parentheses)
                 } else {
                     return(
                         <tr key={item.id}>
-                            <td className="align-middle">{item.customName} <span className="text-muted">({item.garmentType})</span></td>
+                            <td className="align-middle">{item.customName} <span className="text-muted">({garmentTypeReadable})</span></td>
                             <td>
                                 <button 
                                     className="btn btn-secondary btn-sm" 
@@ -82,7 +91,11 @@ export class GarmentsList extends React.Component {
         return (
             <div className="garmentsList container border pt-2">
                 <h2>My Wardrobe</h2>
-                <TableContents currentGarments={this.props.currentGarments} onRemoveGarment={(id) => this.handleRemove(id)}/>
+                <TableContents 
+                    currentGarments={this.props.currentGarments} 
+                    onRemoveGarment={(id) => this.handleRemove(id)}
+                    garmentTypes={this.props.garmentTypes}
+                />
             </div>
         );
     }

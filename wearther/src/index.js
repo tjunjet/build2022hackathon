@@ -226,7 +226,11 @@ class App extends React.Component {
                             <div className="col-md-6">
                                 {/*Left column*/}
                                 <WhatToWear />
-                                <GarmentsList currentGarments={this.state.clothes} onRemoveGarment={(id) => this.removeGarment(id)}/>
+                                <GarmentsList 
+                                    currentGarments={this.state.clothes} 
+                                    onRemoveGarment={(id) => this.removeGarment(id)}
+                                    garmentTypes={this.state.garmentTypes}
+                                />
                             </div>
                             <div className="col-md-6">
                                 {/*Right column*/}
