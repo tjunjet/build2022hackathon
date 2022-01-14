@@ -15,6 +15,7 @@ export class PersonalDetailsForm extends React.Component {
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.handleChangeBodyFatPercentage = this.handleChangeBodyFatPercentage.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleReset = this.handleReset.bind(this);
     }
     handleChangeAge(event) {
         this.setState({
@@ -59,12 +60,20 @@ export class PersonalDetailsForm extends React.Component {
             );
         }
     }
+    handleReset(event) {
+        this.setState({
+            ageValue: "",
+            heightValue: "",
+            weightValue: "",
+            bodyFatPercentageValue: "",
+        });
+    }
 
     render() {
         return(
             <div className="newGarmentForm container pt-2 pb-3 border">
                 <h2>Personal Info</h2>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} onReset={this.handleReset}>
                     {/*First row of form fields*/}
                     <div className="row mt-3">
                         <div className="col">
