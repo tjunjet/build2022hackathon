@@ -49,16 +49,17 @@ export class PersonalDetailsForm extends React.Component {
             (event.target.coldTolerance.value === "default")
         ) {
             return;
-        } else {
-            this.props.onSubmit(
-                event.target.sex.value,
-                event.target.age.value,
-                event.target.height.value,
-                event.target.weight.value,
-                event.target.bodyFatPercentage.value,
-                event.target.coldTolerance.value,
-            );
         }
+        this.props.onSubmit(
+            event.target.sex.value,
+            event.target.age.value,
+            event.target.height.value,
+            event.target.weight.value,
+            event.target.bodyFatPercentage.value,
+            event.target.coldTolerance.value,
+        );
+        this.setState({});
+        
     }
     handleReset(event) {
         this.setState({
