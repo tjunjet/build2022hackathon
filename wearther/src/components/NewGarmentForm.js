@@ -18,6 +18,7 @@ export class NewGarmentForm extends React.Component {
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleReset = this.handleReset.bind(this);
     }
     handleChange(event) {
         this.setState({
@@ -34,6 +35,9 @@ export class NewGarmentForm extends React.Component {
             customNameValue: "",
         });
     }
+    handleReset(event) {
+        // TO DO
+    }
     render() {
         const garmentOptions = this.props.garmentTypes.map((item) => {
             return (
@@ -46,7 +50,7 @@ export class NewGarmentForm extends React.Component {
         return(
             <div className="newGarmentForm container pt-2 pb-3 border">
                 <h2>Add to Wardrobe</h2>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} onReset={this.handleReset}>
                     <div className="row">
                         <div className="col">
                             <div className="form-group">

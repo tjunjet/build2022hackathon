@@ -14,6 +14,7 @@ export class PersonalDetailsForm extends React.Component {
         this.handleChangeHeight = this.handleChangeHeight.bind(this);
         this.handleChangeWeight = this.handleChangeWeight.bind(this);
         this.handleChangeBodyFatPercentage = this.handleChangeBodyFatPercentage.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChangeAge(event) {
         this.setState({
@@ -37,25 +38,26 @@ export class PersonalDetailsForm extends React.Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        alert("flkdakfljakajlfjklafdjkl;dfs")
+        // If none of the fields are filled, ignore
         if (
-            event.target.sex.value === "default" &&
-            event.target.age.value === "" &&
-            event.target.age.height === "" &&
-            // TO DO
+            (event.target.sex.value === "default") &&
+            (event.target.age.value === "") &&
+            (event.target.height.value === "") &&
+            (event.target.weight.value === "") &&
+            (event.target.bodyFatPercentage.value === "") &&
+            (event.target.coldTolerance.value === "default")
         ) {
-            // TO DO (what to do if no fields are filled up)
-        }
-        /*
-        FROM NEW GARMENT FORM
-        if (event.target.garmentType.value === "default") {
             return;
+        } else {
+            this.props.onSubmit(
+                event.target.sex.value,
+                event.target.age.value,
+                event.target.height.value,
+                event.target.weight.value,
+                event.target.bodyFatPercentage.value,
+                event.target.coldTolerance.value,
+            );
         }
-        this.props.onSubmit(event.target.customName.value, event.target.garmentType.value);
-        this.setState({
-            customNameValue: "",
-        });
-        */
     }
 
     render() {

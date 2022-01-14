@@ -99,6 +99,26 @@ class App extends React.Component {
         });
     }
 
+    // Update personal details upon Personal Details form submission
+    submitPersonalDetails(sex, age, height, weight, bodyFatPercentage, coldTolerance) {
+        const bmi = weight / ((height/100) ** 2);
+        const userDetails = {
+            sex: sex,
+            age: age,
+            height: height,
+            weight: weight,
+            bmi: bmi,
+            bodyFatPercentage: bodyFatPercentage,
+            coldTolerance: coldTolerance,
+        }
+        this.setState({
+            userDetails: userDetails,
+        });
+        console.log(this.state.userDetails);
+        alert("Personal details updated");
+        // TO DO: Validate responses; convert to correct data types; set default values if necessary
+    }
+
     //Get geolocation data
     getLocation() {
         if ('geolocation' in navigator) {
@@ -248,7 +268,11 @@ class App extends React.Component {
                                     location={this.state.location}
                                     onSubmit={() => this.refreshLocationAndWeather()}
                                 />
-                                <PersonalDetailsForm />
+                                <PersonalDetailsForm 
+                                    onSubmit={(sex, age, height, weight, bodyFatPercentage, coldTolerance) => 
+                                        this.submitPersonalDetails(sex, age, height, weight, bodyFatPercentage, coldTolerance)
+                                    }
+                                />
                                 <NewGarmentForm 
                                     onSubmit={(customName, garmentType) => this.addGarment(customName, garmentType)}
                                     garmentTypes={this.state.garmentTypes}
@@ -257,8 +281,6 @@ class App extends React.Component {
                         </div>
                     </div>
                 </div>
-                
-                
             </div>
         );
     }
