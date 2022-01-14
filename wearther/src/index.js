@@ -115,7 +115,6 @@ class App extends React.Component {
             userDetails: userDetails,
         });
         console.log(this.state.userDetails);
-        // alert("Personal details updated");
         // TO DO: Validate responses; convert to correct data types; set default values if necessary
     }
 
