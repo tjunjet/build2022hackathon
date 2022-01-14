@@ -26,7 +26,13 @@ export class NewGarmentForm extends React.Component {
     }
     handleSubmit(event) {
         event.preventDefault();
+        if (event.target.garmentType.value === "default") {
+            return;
+        }
         this.props.onSubmit(event.target.customName.value, event.target.garmentType.value);
+        this.setState({
+            customNameValue: "",
+        });
     }
     render() {
         const garmentOptions = this.props.garmentTypes.map((item) => {

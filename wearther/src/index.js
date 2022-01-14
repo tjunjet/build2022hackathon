@@ -45,7 +45,7 @@ class App extends React.Component {
             location: {
                 latitude: null,
                 longitude: null,
-                city: null,
+                city: "Unknown",
             },
             weatherRawData: {
                 openWeatherMap1: null,

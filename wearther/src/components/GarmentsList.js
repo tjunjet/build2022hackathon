@@ -12,7 +12,7 @@ class TableContents extends React.Component {
             );
         } else {
             const garmentsList = this.props.currentGarments.map((item) => {
-                var garmentTypeReadable = "";
+                var garmentTypeReadable = "Unknown type";
                 // Get readable Garment Type
                 for (var i in this.props.garmentTypes) {
                     if (this.props.garmentTypes[i].value === item.garmentType) {
