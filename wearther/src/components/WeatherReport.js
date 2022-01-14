@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// Helper functions for rendering weather data (if data is null, show blank)
 class LocationValue extends React.Component {
     render() {
         if (this.props.latitude !== null && this.props.longitude !== null) {
@@ -30,6 +31,51 @@ class TemperatureValue extends React.Component {
             return(
                 <span>
                     {this.props.temp} &deg;C
+                </span>
+            );
+        } else {
+            return(
+                null
+            );
+        }
+    }
+}
+class PrecipitationValue extends React.Component {
+    render() {
+        if (this.props.precipitationProb !== null) {
+            return(
+                <span>
+                    {this.props.precipitationProb}% chance
+                </span>
+            );
+        } else {
+            return(
+                null
+            );
+        }
+    }
+}
+class WindSpeedValue extends React.Component {
+    render() {
+        if (this.props.windSpeed !== null) {
+            return(
+                <span>
+                    {this.props.windSpeed} mph
+                </span>
+            );
+        } else {
+            return(
+                null
+            );
+        }
+    }
+}
+class HumidityValue extends React.Component {
+    render() {
+        if (this.props.humidity !== null) {
+            return(
+                <span>
+                    {this.props.humidity}%
                 </span>
             );
         } else {
@@ -73,13 +119,22 @@ export class WeatherReport extends React.Component {
                         />
                     </li>
                     <li>
-                        <b>Rain/Snow: </b>{this.props.weather.precipitationProb}% chance
+                        <b>Rain/Snow: </b>
+                        <PrecipitationValue 
+                            precipitationProb={this.props.weather.precipitationProb} 
+                        />
                     </li>
                     <li>
-                        <b>Wind speed: </b>{this.props.weather.windSpeed} mph
+                        <b>Wind speed: </b>
+                        <WindSpeedValue 
+                            windSpeed={this.props.weather.windSpeed} 
+                        />
                     </li>
                     <li>
-                        <b>Humidity: </b>{this.props.weather.humidity}%
+                        <b>Humidity: </b>
+                        <HumidityValue 
+                            humidity={this.props.weather.humidity} 
+                        />
                     </li>
                 </ul>
                 <form onSubmit={this.handleSubmit}>
