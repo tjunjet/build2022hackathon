@@ -111,10 +111,10 @@ class App extends React.Component {
             bodyFatPercentage: bodyFatPercentage,
             coldTolerance: coldTolerance,
         }
+        console.log(userDetails); // Test
         this.setState({
             userDetails: userDetails,
         });
-        console.log(this.state.userDetails);
         // TO DO: Validate responses; convert to correct data types; set default values if necessary
     }
 
