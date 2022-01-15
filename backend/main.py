@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
-from baseModels import Clothing, WeatherData, ClothingSet
+from baseModels import Clothing, WeatherData, ClothingSet, User
 
 app = FastAPI()
 
@@ -17,8 +17,14 @@ from weather_database import (
     create_one_weather_data
 )
 
+from user_database import (
+    fetch_particulars,
+    create_one_particulars
+)
+
 from predictionModel import (
-    predict_clothing
+    predict_clothing,
+    save_user_feedback
 )
 
 # some middleware stuff, unsure if relevant
@@ -32,30 +38,21 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-particulars = {
-    "age" : {  },
-    "weight" : { },
-    "height" : { },
-    "gender": { },
-    "location": { }
-}
-
-
 ###########################
 #### USER PARTICULARS  ####
 ###########################
 
-# input of user's particulars
-@app.get("/get-particulars/{info_type}")
-def get_particulars(info_type : str):
-    return {info_type : particulars[info_type]}
+# input of user's particulars, a database of height, weight, etc columns
+@app.get("/get-particulars", response_model=User)
+async def get_particulars():
+    response = await fetch_particulars()
+    return response 
 
-@app.post("/create-particulars/{info_type}")
-def create_particulars(info_type : str, info : int):
-    if info_type not in particulars:
-        return {"Error": "Invalid type of particulars"}
-    particulars[info_type] = info
-    return {"info type": info_type}
+@app.post("/create-particulars", response_model=User)
+async def create_particulars(particulars : User):
+    response = await create_one_particulars(particulars.dict())
+    if response: return response
+    raise HTTPException(400, "Something went wrong")
 
 ###########################
 #### CLOTHING DATABASE ####
@@ -93,7 +90,7 @@ async def create_clothing(clothing : Clothing):
 #### WEATHER  DATABASE ####
 ###########################
 
-@app.post("/create-weather-data/weather{time}", response_model=WeatherData)
+@app.post("/create-weather-data/weather{datetime}", response_model=WeatherData)
 async def create_weather_data(weather_data : WeatherData):
     response = await create_one_weather_data(weather_data.dict())
     if response: return response
@@ -104,18 +101,21 @@ async def create_weather_data(weather_data : WeatherData):
 #### ML PREDICTION     ####
 ###########################
 
-@app.get("/predict-clothing-set", response_model=ClothingSet)
+@app.get("/prediction/predict-clothing-set", response_model=ClothingSet)
 async def get_clothing_set_prediction(): # question: what input?
     response = await predict_clothing()
     return response 
 
-
+# maybe this can be stored in another database with prediction + feedback for future training
+@app.post("/prediction/user-feedback")
+async def save_user_feedback(feedback : int): # 0: too hot, 1: ok, 2: too cold
+    response = await save_user_feedback()
+    return response
 
 ###########################
 #### AUTHENTICATION    ####
 ###########################
-
-
+'''
 app = FastAPI()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -123,3 +123,4 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 @app.get("/items/")
 async def read_items(token: str = Depends(oauth2_scheme)):
     return {"token": token}
+'''

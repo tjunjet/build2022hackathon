@@ -19,3 +19,6 @@ def predict_clothing(model, weather_data):
         'thickDown' : True,
         'windbreaker' : True,
         'umbrella' : True}
+
+def save_user_feedback(feedback):
+    return feedback 
