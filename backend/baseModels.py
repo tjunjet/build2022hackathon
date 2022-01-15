@@ -8,17 +8,16 @@ class Clothing(BaseModel):
     category : str
 
 class WeatherData(BaseModel):
-    dateTime : datetime
     temp: int
     tempMin: int
     tempMax: int
-    tempFeelsLike: int
-    humidity: int
+    tempFeelsLike: str
+    humidity: str
     windSpeed: int
-    conditionID: int # what are the data types for these?
-    conditionMain: int
-    conditionDesc: int
-    precipitationProb: int
+    conditionID: str # what are the data types for these?
+    conditionMain: str
+    conditionDesc: str
+    precipitationProb: str
 
 class ClothingSet(BaseModel):
     thermals : bool

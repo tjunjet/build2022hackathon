@@ -59,19 +59,19 @@ async def create_particulars(particulars : User):
 ###########################
 
 # connected to db
-@app.get("/get-all-clothings}")
+@app.get("/get-all-clothings")
 async def get_clothings():
     response = await fetch_all_clothings()
     return response 
 
 # connected to db
-@app.get("/get-clothing-by-name/clothing{name}", response_model=Clothing)
+@app.get("/get-clothing-by-name", response_model=Clothing)
 async def get_clothing_by_name(name: str):   
     response = await fetch_one_clothing(name)
     return response 
 
 # connected to db
-@app.post("/create-clothing/clothing{name}", response_model=Clothing)
+@app.post("/create-clothing", response_model=Clothing)
 async def create_clothing(clothing : Clothing):
     response = await create_one_clothing(clothing.dict())
     if response: return response
@@ -90,7 +90,7 @@ async def create_clothing(clothing : Clothing):
 #### WEATHER  DATABASE ####
 ###########################
 
-@app.post("/create-weather-data/weather{datetime}", response_model=WeatherData)
+@app.post("/create-weather-data", response_model=WeatherData)
 async def create_weather_data(weather_data : WeatherData):
     response = await create_one_weather_data(weather_data.dict())
     if response: return response
@@ -101,13 +101,13 @@ async def create_weather_data(weather_data : WeatherData):
 #### ML PREDICTION     ####
 ###########################
 
-@app.get("/prediction/predict-clothing-set", response_model=ClothingSet)
+@app.get("/predict-clothing-set", response_model=ClothingSet)
 async def get_clothing_set_prediction(): # question: what input?
     response = await predict_clothing()
     return response 
 
 # maybe this can be stored in another database with prediction + feedback for future training
-@app.post("/prediction/user-feedback")
+@app.post("/save-user-feedback")
 async def save_user_feedback(feedback : int): # 0: too hot, 1: ok, 2: too cold
     response = await save_user_feedback()
     return response

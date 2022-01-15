@@ -16,7 +16,7 @@ async def fetch_one_clothing(name):
     return item
 
 # multiple clothing with the same name can be added!
-async def create_one_clothing(name, clothing : Clothing):
+async def create_one_clothing(clothing : Clothing):
     item = clothing
     result = await collection.insert_one(item)
     return item 

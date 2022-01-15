@@ -1,4 +1,5 @@
 import React from 'react';
+import { userState, useEffect } from 'react'; // for integration
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -79,6 +80,10 @@ class App extends React.Component {
             clothes: clothes,
             nextGarmentID: (this.state.nextGarmentID + 1),
         });
+        axios.post('http://localhost:8000/create-clothing', 
+                    {"name" : customName, "category": garmentType}
+                    )
+            .then(response => console.log(response))
     }
     
     // Remove from list of available clothes
@@ -152,6 +157,8 @@ class App extends React.Component {
                 console.log(error);
             });
         }
+        axios.post('http://localhost:8000/create-weather-data', this.weather)
+            .then(response => console.log(response))
     }
 
     //Parse data from first API call (openWeatherMap One Call API)
