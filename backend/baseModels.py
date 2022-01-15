@@ -4,6 +4,7 @@ from typing import Optional
 
 # base mode for clothings
 class Clothing(BaseModel):
+    clothing_id : int
     name : str
     category : str
 

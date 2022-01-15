@@ -81,8 +81,11 @@ class App extends React.Component {
             nextGarmentID: (this.state.nextGarmentID + 1),
         });
         axios.post('http://localhost:8000/create-clothing', 
-                    {"name" : customName, "category": garmentType}
-                    )
+                    {"clothing_id" : this.state.nextGarmentID, 
+                    "name" : customName, 
+                    "category": garmentType
+                    }
+                )
             .then(response => console.log(response))
     }
     

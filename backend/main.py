@@ -11,6 +11,7 @@ from clothing_database import (
     fetch_all_clothings,
     fetch_one_clothing,
     create_one_clothing,
+    remove_one_clothing
 )
 
 from weather_database import (
@@ -65,9 +66,9 @@ async def get_clothings():
     return response 
 
 # connected to db
-@app.get("/get-clothing-by-name", response_model=Clothing)
-async def get_clothing_by_name(name: str):   
-    response = await fetch_one_clothing(name)
+@app.get("/get-clothing-by-id", response_model=Clothing)
+async def get_clothing_by_id(clothing_id : int):   
+    response = await fetch_one_clothing(clothing_id)
     return response 
 
 # connected to db
@@ -77,13 +78,13 @@ async def create_clothing(clothing : Clothing):
     if response: return response
     raise HTTPException(400, "Something went wrong")
 
-# @app.delete("/delete-clothing/{clothing_id}")
-# def delete_clothing(clothing_id : int):
-#     if clothing_id not in clothings:
-#         return {"Error": "Clothing does not exist"}
-    
-#     del clothings[clothing_id]
-#     return {"Message": "Clothing deleted successfully"}
+@app.delete("/delete-clothing-by-id")
+async def delete_clothing(clothing_id : int):
+    if get_clothing_by_id(clothing_id) == "null":
+        return {"Error" : "Clothing does not exist"}
+    else:
+        response = await remove_one_clothing(clothing_id)
+        return response
 
 
 ###########################
