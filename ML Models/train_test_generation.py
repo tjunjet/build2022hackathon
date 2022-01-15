@@ -25,7 +25,6 @@ Weather features:
 2. Humidity (%) (relative) (0 to 100)
 3. Probability of Precipitation (%) (0 to 100)
 4. Wind speed (mph)
-
 User features:
 1. Age (15 to 60)
 2. Weight (kg)
@@ -68,10 +67,13 @@ def peopledatagenerator():
     else:
         height = np.random.normal(loc = 161.3, scale = 5.59)
         weight = np.random.normal(loc = 77.5, scale = 15)
+
+    # newly added preference factor, could use normal distribution later on to vary it
+    preference_factor = random.randint(95,105) # adjustment to cold resistance index
         
-    return sex, age, height, weight
+    return sex, age, height, weight, preference_factor
 
-
+peopledatagenerator()
 
 # In[ ]:
 
@@ -197,6 +199,8 @@ def coldresistance(sex, age, fatpercentage, BMI):
     return cold_resistance
 
 
+print( coldresistance(1, 13, 30, 21) )
+    
 # In[ ]:
 
 
@@ -265,6 +269,9 @@ def predictusingheatscore(temperature, cold_resistance, heatmap, windspeed, prec
     else:
         result = []
         
+        #we want to get the comparison insulation to classify for too hot too cold later
+        comparison_insulation = insulation_required
+        
         
         while insulation_required > 0:
             smallest_difference = 100000
@@ -286,6 +293,7 @@ def predictusingheatscore(temperature, cold_resistance, heatmap, windspeed, prec
             
         for ite in result:
             prediction[clothesmap[ite]] = True
+            
         
 
         
@@ -339,6 +347,17 @@ def getdifference(temperature, cold_resistance, heatmap, windspeed, precipitatio
         return differenceinexpectation
 
 
+# In[ ]:
+def getUserFeedback(scoring_difference):
+    if scoring_difference < -5:
+        return 0 # too hot
+    elif scoring_difference > 5:
+        return 2 # too hot
+    else:
+        return 1 # ok
+            
+
+
 
 
 #returns the features and output dataframes for ML
@@ -355,7 +374,7 @@ def generateSmartDataset(count):
         windspeed = random.randint(0, 40) #mph
         
         
-        sex, age, height, weight = peopledatagenerator()
+        sex, age, height, weight, preference_factor = peopledatagenerator()
 
         #fat percentage formula from
         #https://www.gaiam.com/blogs/discover/how-to-calculate-your-ideal-body-fat-percentage
@@ -371,27 +390,33 @@ def generateSmartDataset(count):
         if fatpercentage < 0:
             fatpercentage = 1
 
-        datapoint = (date, temperature, humidity, precipitation, windspeed, age, weight, height, sex, fatpercentage, BMI)
+        datapoint = (date, temperature, humidity, precipitation, windspeed, age, weight, height, sex, fatpercentage, BMI, preference_factor)
         data.append(datapoint)
         
         
-    columnstring = 'date,temperature,humidity,precipitation,windspeed,age,weight,height,sex,fatpercentage,bmi'
+    columnstring = 'date,temperature,humidity,precipitation,windspeed,age,weight,height,sex,fatpercentage,bmi,preference_factor'
     column = columnstring.split(',')
     df = pd.DataFrame(data, columns = column)
     
-    
     df['cold_resistance'] = df.apply(lambda row : coldresistance(row['sex'], row['age'], row['fatpercentage'], row['bmi']), axis = 1)
-         
+    
+    
+    
+    # newly added adjusted cold resistance
+    df['adjusted_cold_resistance'] = (df['cold_resistance'] * (df['preference_factor']/100))
     
     for article in clothesmap:
-        df[article] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['cold_resistance'], heatmap,row['windspeed'], row['precipitation'])[clothesmap[article]], axis = 1)
-    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap, row['windspeed'], row['precipitation']), axis = 1)
-
+        df[article] = df.apply(lambda row : predictusingheatscore(row['temperature'], row['adjusted_cold_resistance'], heatmap,row['windspeed'], row['precipitation'])[clothesmap[article]], axis = 1)
+    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['adjusted_cold_resistance'], heatmap,                                                              row['windspeed'], row['precipitation']), axis = 1)
+ 
+    # newly added user_feedback
+    df['user_feedback'] = df.apply(lambda row : getUserFeedback(row['scoring_difference']), axis = 1)
+       
     
     return df
-    
-    
-    
+   
+
+
 
 
 #totally random data
@@ -411,6 +436,8 @@ def generaterandomDataset(count):
         weight = random.randint(30, 120) #kg
         height = random.randint(110, 200) #cm
         sex = random.randint(0,1) # 0:M 1:F
+        # newly added preference factor, could use normal distribution later on to vary it
+        preference_factor = random.randint(95,105) # adjustment to cold resistance index
         
         BMI = weight/(height**2)*10000
         if sex == 0:
@@ -423,12 +450,12 @@ def generaterandomDataset(count):
         if fatpercentage < 0:
             fatpercentage = 1
 
-        datapoint = (date, temperature, humidity, precipitation, windspeed, age, weight, height, sex, fatpercentage, BMI)
+        datapoint = (date, temperature, humidity, precipitation, windspeed, age, weight, height, sex, fatpercentage, BMI, preference_factor)
         
         data.append(datapoint)
         
         
-    columnstring = 'date,temperature,humidity,precipitation,windspeed,age,weight,height,sex,fatpercentage,bmi'
+    columnstring = 'date,temperature,humidity,precipitation,windspeed,age,weight,height,sex,fatpercentage,bmi,preference_factor'
     column = columnstring.split(',')
     df = pd.DataFrame(data, columns = column)
     
@@ -439,12 +466,22 @@ def generaterandomDataset(count):
         df[article] = -1
         for ite in range(count):
             df[article][ite] = bool(random.getrandbits(1))
-            
-            
-    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['cold_resistance'], heatmap, row['windspeed'], row['precipitation']), axis = 1)
     
+    # newly added adjusted cold resistance
+    df['adjusted_cold_resistance'] = (df['cold_resistance'] * (df['preference_factor']/100))
+    
+    df['scoring_difference'] = df.apply(lambda row : getdifference(row['temperature'], row['adjusted_cold_resistance'], heatmap,                                                                  row['windspeed'], row['precipitation']), axis = 1)
+    
+    # newly added user_feedback
+    df['user_feedback'] = df.apply(lambda row : getUserFeedback(row['scoring_difference']), axis = 1)
+       
     return df
-    
+                   
+
+
+
+
+# In[ ]:
 
 
 def generatefinaldf(count, mode, proportion):
@@ -453,23 +490,23 @@ def generatefinaldf(count, mode, proportion):
     randomdf = generaterandomDataset(int(count/100*(100-proportion)))
     #ans1 = smartdf.size
     #ans2 = randomdf.size
-    
     #print(ans1, ans2)
     #return None
     final_df = pd.concat([smartdf, randomdf], ignore_index=True)
+    features = final_df[['temperature', 'humidity', 'precipitation', 'windspeed', 'age', 'weight', 'height', 'sex', 'fatpercentage', 'bmi', 'cold_resistance', 'scoring_difference', 'adjusted_cold_resistance','preference_factor']]
+              
+    # output = final_df[clothesmap.keys()]
+    output = final_df[list(clothesmap.keys()) + ['user_feedback']]
     
-    features = final_df[['temperature', 'humidity', 'precipitation', 'windspeed', 'age', 'weight', 'height', 'sex', 'fatpercentage', 'bmi', 'cold_resistance', 'scoring_difference']]
-    output = final_df[clothesmap.keys()]
     if mode == 'ML':
         return features, output
     else:
         return final_df
 
-#debugging
 # In[ ]:
 
 
-#df = generatefinaldf(10**5, "das", 95)
+#df = generatefinaldf(10**5, "das", )
 
 
 # In[ ]:
@@ -500,10 +537,3 @@ def generatefinaldf(count, mode, proportion):
 
 
 #output.tail()
-
-
-# In[ ]:
-
-
-
-
