@@ -9,16 +9,11 @@ class Clothing(BaseModel):
     category : str
 
 class WeatherData(BaseModel):
+    dateTime : datetime
     temp: int
-    tempMin: int
-    tempMax: int
-    tempFeelsLike: str
-    humidity: str
+    humidity: int
     windSpeed: int
-    conditionID: str # what are the data types for these?
-    conditionMain: str
-    conditionDesc: str
-    precipitationProb: str
+    precipitationProb: int
 
 class ClothingSet(BaseModel):
     thermals : bool
@@ -29,11 +24,13 @@ class ClothingSet(BaseModel):
     umbrella : bool
 
 class User(BaseModel):
-    name : str
+    user : int
     age : int
     weight : float
-    height : float
-    gender : bool
+    height : int
+    gender : bool # 0 for M, 1 for F
+    fatpercentage : float
+    bmi : float
     # username : str
     # disabled: Optional[bool] = None
 
