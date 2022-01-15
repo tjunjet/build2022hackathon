@@ -73,7 +73,7 @@ def peopledatagenerator():
         
     return sex, age, height, weight, preference_factor
 
-peopledatagenerator()
+#peopledatagenerator()
 
 # In[ ]:
 

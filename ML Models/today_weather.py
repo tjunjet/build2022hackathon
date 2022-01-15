@@ -41,7 +41,7 @@ def gettemperaturedata(api):
         'date' : '20' + date.today().strftime("%y-%m-%d"),
         'temperature' : data['current']['temp'],
         'humidity' : data['current']['humidity'], 
-        'precipitation' : data['hourly'][-1]['pop'],
+        'precipitation' : data['hourly'][-1]['pop']*100,
         'windspeed' : data['current']['wind_speed'] * 2.237 #in mph
 
     }
