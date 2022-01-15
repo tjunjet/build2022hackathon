@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import date
 from typing import Optional
 
 # base mode for clothings
@@ -9,11 +9,11 @@ class Clothing(BaseModel):
     category : str
 
 class WeatherData(BaseModel):
-    dateTime : datetime
-    temp: int
+    date : date
+    temperature: int
     humidity: int
+    precipitation: int
     windSpeed: int
-    precipitationProb: int
 
 class ClothingSet(BaseModel):
     thermals : bool
@@ -24,14 +24,24 @@ class ClothingSet(BaseModel):
     umbrella : bool
 
 class User(BaseModel):
-    user : int
     age : int
     weight : float
     height : int
-    gender : bool # 0 for M, 1 for F
+    sex : bool # 0 for M, 1 for F
     fatpercentage : float
     bmi : float
     # username : str
     # disabled: Optional[bool] = None
 
-    
+class PredictionInput(BaseModel):
+    temperature: int
+    humidity: int
+    precipitation: int
+    windSpeed: int
+    age : int
+    weight : float
+    height : int
+    sex : bool # 0 for M, 1 for F
+    fatpercentage : float
+    bmi : float
+   

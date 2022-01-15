@@ -3,7 +3,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
-from baseModels import Clothing, WeatherData, ClothingSet, User
+from baseModels import Clothing, WeatherData, ClothingSet, User, PredictionInput
 
 app = FastAPI()
 
@@ -103,14 +103,14 @@ async def create_weather_data(weather_data : WeatherData):
 ###########################
 
 @app.get("/predict-clothing-set", response_model=ClothingSet)
-async def get_clothing_set_prediction(): # question: what input?
-    response = await predict_clothing()
+async def get_clothing_set_prediction(prediction_input : PredictionInput): # question: what input?
+    response = await predict_clothing(prediction_input)
     return response 
 
 # maybe this can be stored in another database with prediction + feedback for future training
 @app.post("/save-user-feedback")
 async def save_user_feedback(feedback : int): # 0: too hot, 1: ok, 2: too cold
-    response = await save_user_feedback()
+    response = await save_user_feedback(feedback)
     return response
 
 ###########################
@@ -125,3 +125,4 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 async def read_items(token: str = Depends(oauth2_scheme)):
     return {"token": token}
 '''
+
