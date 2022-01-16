@@ -49,7 +49,17 @@ export class PersonalDetailsForm extends React.Component {
             (event.target.coldTolerance.value === "default")
         ) {
             return;
+        } else if (
+            (event.target.sex.value === "default") ||
+            (event.target.age.value === "") ||
+            (event.target.height.value === "") ||
+            (event.target.weight.value === "") ||
+            (event.target.bodyFatPercentage.value === "") ||
+            (event.target.coldTolerance.value === "default")
+        ) {
+            alert("You have not entered details in 1 or more field(s); default values for these will be used for generating recommendations.");
         }
+
         this.props.onSubmit(
             event.target.sex.value,
             event.target.age.value,
