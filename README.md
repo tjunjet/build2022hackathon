@@ -1,3 +1,6 @@
+## Elevator Pitch
+Having trouble deciding how many layers to wear on a cold day? Using deep learning, "The Winter Wear-ther Guide" recommends what to wear by formulating relationships between the weather and you!
+
 ## Inspiration
 Pittsburgh's weather is really erratic in the winter and deciding what to wear is really tough! As students living in Pittsburgh we really wanted to find out what to wear based on current weather conditions in winter and we came up with this app to do so!
 
@@ -15,12 +18,36 @@ There are 3 steps to our model for our application.
 
 ## Challenges we ran into
 
+# Web Development: 
+
+# Machine Learning:
+
+Initially, we wanted to figure out an algorithm that can draw relationships between the user body characteristics, weather data, and user feedback. However, we eventually decided to be enterprising and train a deep learning model to come up with accurate predictions to recommend how many layers to wear for a user. 
+
+The first problem that we faced was obtaining a dataset. As we decided to utilize both unsupervised and supervised deep learning to train our application's model, a large dataset was of utmost importance. This is to ensure that any new user to the app will still have relatively accurate recommendations given, even if it were not personalized. Given the specificity of our project, we were unable to find a dataset online that catered to our needs. Hence, through researching the relationships between human body types, weather, and what people would wear in a specific kind of weather, we wrote an algorithm that could generate the dataset in a smart and reliable manner. We then utilized this dataset to train the neural network as a placeholder before more accurate, real-life data could be obtained should this app eventually be implemented.
+
+Furthermore, it was challenging to figure out what deep learning approach to use. After much debate, research, and thorough analysis of machine learning frameworks, we decided to split our machine learning model into three parts: Firstly, an unsupervised AutoEncoder that would encode the user's data into an embedding. Secondly, integrating the embedding of user data with weather parameters and what users would potentially wear to predict user feedback on the recommendation. Lastly, utilizing Reinforcement Learning to extract real-time data from the user to personalize recommendations toward a particular user.
+
 
 ## Accomplishments that we're proud of
+1. Coming up with the deep learning framework
+2. Integrating the entire full-stack
 
 ## What we learned
+Even though the application may not have turned out the way we expected, many of us were exposed to new things during this hackathon. 
 
-## What's next for Untitled
+For example, most of us have had experience with full-stack development and machine learning before this hackathon. Instead of choosing a project of our area of expertise, we decided to try out something new in order to gain the most out of this hackathon - this is because at the end of the day, the biggest prize one can takeaway from any hackathon is a new skill. 
+
+Some of the things that we learned during this hackathon: 
+- New programming languages: HTML, CSS, Javascript, Python
+- Front-End Development using React.js
+- Back-End Development using FastAPI
+- Database analysis using MongoDB
+- Deep Learning Frameworks: AutoEncoder for unsupervised learning, Artificial Neural Network for supervised learning, Deep Q-Learning framework for Reinforcement learning.
+
+## What's next for "The Winter Wear-ther Guide"
+
+The hackathon may be over, but "The Winter Wear-ther Guide" is far from giving up. 
 
 
 
