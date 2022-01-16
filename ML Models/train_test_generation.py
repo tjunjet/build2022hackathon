@@ -45,7 +45,7 @@ output will be in the form of a boolean array with each index presenting differe
 'thick_down' : 5,
 'wind_breaker' : 6,
 'umbrella' : 7,
-'winter_boots': 8
+'winter_boots': 8F
 """
 
 
@@ -269,14 +269,12 @@ def predictusingheatscore(temperature, cold_resistance, heatmap, windspeed, prec
     else:
         result = []
         
-        #we want to get the comparison insulation to classify for too hot too cold later
-        comparison_insulation = insulation_required
         
         
         while insulation_required > 0:
             smallest_difference = 100000
             best_cloth = ''
-            #hardstop at 5 layers
+            #hardstop at 6 layers
             if len(result) == 6:
                 break
             
