@@ -88,13 +88,13 @@ class App extends React.Component {
                 precipitationProb: null,
             },
             userDetails: {
-                sex: null,
-                age: null,
-                height: null,
-                weight: null,
-                bmi: null,
-                bodyFatPercentage: null,
-                coldTolerance: null,
+                sex: "default",
+                age: "",
+                height: "",
+                weight: "",
+                bmi: "",
+                bodyFatPercentage: "",
+                coldTolerance: "default",
             },
             defaultUserDetails: {
                 sex: 1,
@@ -355,7 +355,7 @@ class App extends React.Component {
         // 5. BMI (calculated)
         var bmi = this.state.defaultUserDetails.bmi;
         if (this.state.userDetails.bmi !== NaN) {
-            const bmi = parseFloat(weight / ((height/100) ** 2));
+            bmi = parseFloat(weight / ((height/100) ** 2));
         }
         // 6. Fat Percentage (calculated)
         var fatpercentage = 0;
@@ -462,8 +462,9 @@ class App extends React.Component {
         }
         // 5. BMI (calculated)
         var bmi = this.state.defaultUserDetails.bmi;
-        if (this.state.userDetails.bmi !== NaN) {
-            const bmi = parseFloat(weight / ((height/100) ** 2));
+        console.log(this.state.userDetails.bmi);
+        if (this.state.userDetails.bmi !== "") {
+            bmi = parseFloat(weight / ((height/100) ** 2));
         }
         // 6. Fat Percentage (calculated)
         var fatpercentage = 0;
@@ -474,6 +475,14 @@ class App extends React.Component {
         }
         if (fatpercentage < 0) {
             fatpercentage = 1;
+        }
+        // Clothes
+        const clothes = new Object();
+        for (var i in this.state.garmentTypes) {
+            clothes[this.state.garmentTypes[i].value] = false;
+        }
+        for (var j in this.state.clothes) {
+            clothes[this.state.clothes[j].garmentType] = true;
         }
         const params = {
             "temperature": temperature,
@@ -486,6 +495,7 @@ class App extends React.Component {
             "sex": sex,
             "fatpercentage": fatpercentage,
             "bmi": bmi,
+            "clothes": clothes,
         };
         console.log("Sending GET request for recommendations; parameters:");
         console.log(params);
