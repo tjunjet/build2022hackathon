@@ -182,7 +182,16 @@ class App extends React.Component {
             "bmi": bmi,
             "fatpercentage": 0,
         }
-        // TO DO: Make API call
+        axios.post(
+            this.state.backendEndpoints.postPersonalDetails, 
+            data
+        )
+        .then((response) => {
+            console.log("Personal Details data posted");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     //Get geolocation data
