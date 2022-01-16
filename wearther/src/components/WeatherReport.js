@@ -24,7 +24,7 @@ class TemperatureValue extends React.Component {
         if (this.props.temp !== null && this.props.tempMin !== null && this.props.tempMax !== null) {
             return(
                 <span>
-                    {this.props.temp} &deg;C <span className="text-muted">({this.props.tempMin} - {this.props.tempMax})</span>
+                    {this.props.temp} &deg;C <span className="text-muted">({this.props.tempMin} to {this.props.tempMax})</span>
                 </span>
             );
         } else if (this.props.temp !== null) {
