@@ -61,6 +61,7 @@ class App extends React.Component {
         super(props);
         this.state = {
             clothes: Array(), //Save clothes as an array of objects
+            recommendedClothes: Array(),
             nextGarmentID: 1,
             garmentTypes: garmentTypes,
             urls: urls,
@@ -159,6 +160,79 @@ class App extends React.Component {
             this.postPersonalDetails
         );
         // TO DO: Validate responses; convert to correct data types; set default values if necessary
+    }
+
+// --------------------
+// UPDATE STATE FROM BACKEND DATA
+// --------------------
+
+    // Update this.state.recommendedClothes (an array) based on backend-provided recommendations
+    // For each clothing type recommended by backend, recommended a clothing piece, prioritizing those with custom names
+    updateRecommendedClothes(response) {
+        /*
+        response is in the format:
+        Object {
+            "thermal": true/false,
+            "fleece": true/false,
+            ...
+        }
+        this.state.clothes is in the format:
+        Array {
+            {
+                customName: ...
+                garmentType: ...
+                id: ...
+            }
+            ...
+        }
+        this.state.recommendedClothes should also be in the format:
+        Array {
+            {
+                customName: ...
+                garmentType: ...
+            }
+            ...
+        }
+        */
+        const recommendedClothes = Array();
+        // Loop through all possible garment types
+        var type = false;
+        for (var i in this.state.garmentTypes) {
+            type = this.state.garmentTypes[i].value;
+            // If the garment type is recommended to wear
+            if (response[type] === true) {
+                var customName = "";
+                var garmentType = type;
+                var id = "";
+                var found = false;
+                // Loop through wardrobe to find a clothing with the given type
+                for (var j in this.state.clothes) {
+                    // Clothing is of the given type
+                    if (this.state.clothes[j].garmentType === type) {
+                        found = true;
+                        // Clothing has a custom name
+                        if (this.state.clothes[j].customName !== "") {
+                            customName = this.state.clothes[j].customName;
+                            id = this.state.clothes[j].id;
+                        // Clothing has no custom name, and garmentToWear does not have a custom name yet
+                        } else if (customName === "") {
+                            id = this.state.clothes[j].id;
+                        }
+
+                    }
+                }
+                if (found === true) {
+                    recommendedClothes.push({
+                        customName: customName,
+                        garmentType: garmentType,
+                        id: id,
+                    });
+                }
+            }
+        }
+        console.log("recommended:")
+        console.log(recommendedClothes);
+        // TO DO: Set state with recommended clothes
     }
 
 // --------------------
@@ -507,12 +581,26 @@ class App extends React.Component {
         )
         .then((response) => {
             console.log("Recommendations received:")
-            // TO DO: Deal with received data
             console.log(response);
+            // this.updateRecommendedClothes(response);
         })
         .catch((error) => {
             console.log(error);
         });
+
+        // TESTING WITH PLACEHOLDER RESPONSE
+        const placeholderResponse = {
+            "thermal": true,
+            "hoodie": true,
+            "fleece": false,
+            "wool": false,
+            "light_down": false,
+            "thick_down": false,
+            "wind_breaker": true,
+            "umbrella": false,
+            "winter_boots": false,
+        }
+        this.updateRecommendedClothes(placeholderResponse);
     }
 
 // --------------------
