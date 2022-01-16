@@ -102,9 +102,30 @@ class App extends React.Component {
             garmentType: garmentType,
             id: this.state.nextGarmentID,
         });
+        addedID = this.state.nextGarmentID;
         this.setState({
             clothes: clothes,
             nextGarmentID: (this.state.nextGarmentID + 1),
+        });
+        this.postAddGarment(addedID, customName, garmentType);
+    }
+
+    // Make POST request to backend API for adding a garment
+    postAddGarment(addedID, customName, garmentType) {
+        const data = {
+            "clothing_id": addedID,
+            "name": customName,
+            "category": garmentType,
+        };
+        axios.post(
+            this.state.backendEndpoints.postAddGarment, 
+            data
+        )
+        .then((response) => {
+            console.log("Add Garment data posted");
+        })
+        .catch((error) => {
+            console.log(error);
         });
     }
     
@@ -114,6 +135,24 @@ class App extends React.Component {
         const clothes = this.state.clothes.filter((item) => {return item.id !== id;});
         this.setState({
             clothes: clothes,
+        });
+        this.postRemoveGarment(id);
+    }
+
+    // Make POST request to backend API for adding a garment
+    postRemoveGarment(id) {
+        const data = {
+            "clothing-id": id,
+        };
+        axios.post(
+            this.state.backendEndpoints.postRemoveGarment, 
+            data
+        )
+        .then((response) => {
+            console.log("Remove Garment data posted");
+        })
+        .catch((error) => {
+            console.log(error);
         });
     }
 
@@ -181,7 +220,7 @@ class App extends React.Component {
             "sex": sex,
             "bmi": bmi,
             "fatpercentage": 0,
-        }
+        };
         axios.post(
             this.state.backendEndpoints.postPersonalDetails, 
             data
