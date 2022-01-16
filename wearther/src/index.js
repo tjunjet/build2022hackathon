@@ -39,7 +39,7 @@ const backendEndpoints = {
     postAddGarment: "http://locahost:8000/create-clothing",
     postRemoveGarment: "http://locahost:8000/delete-clothing-by-id",
     postFeedback: "http://locahost:8000/save-user-feedback",
-    postGetPrediction: "http://locahost:8000/predict-clothing-set",
+    getRecommendations: "http://locahost:8000/predict-clothing-set",
 };
 
 class App extends React.Component {
@@ -272,7 +272,7 @@ class App extends React.Component {
     }
 
 // --------------------
-// API REQUESTS
+// BACKEND API REQUESTS
 // --------------------
 
     // Make POST request to backend API for submitting weather data
@@ -343,6 +343,16 @@ class App extends React.Component {
         if (this.state.userDetails.bmi !== NaN) {
             const bmi = parseFloat(weight / ((height/100) ** 2));
         }
+        // 6. Fat Percentage (calculated)
+        var fatpercentage = 0;
+        if (sex === 1) {
+            fatpercentage = parseInt((1.2 * bmi) + (0.23 * age) - 5.4);
+        } else {
+            fatpercentage = parseInt((1.2 * bmi) + (0.23 * age) - 16.2);
+        }
+        if (fatpercentage < 0) {
+            fatpercentage = 1;
+        }
         // JSON data prepared for posting
         const data = {
             "age": age,
@@ -350,7 +360,7 @@ class App extends React.Component {
             "height": height,
             "sex": sex,
             "bmi": bmi,
-            "fatpercentage": 0,
+            "fatpercentage": fatpercentage,
         };
         console.log("Posting Personal Details data:");
         console.log(data);
@@ -404,6 +414,122 @@ class App extends React.Component {
         .catch((error) => {
             console.log(error);
         });
+    }
+
+    // Make GET request to backend API for getting clothing recommendations
+    getRecommendations() {
+        const temperature = parseFloat(this.state.weather.temp);
+        const humidity = parseInt(this.state.weather.humidity);
+        const precipitation = parseInt(this.state.weather.precipitationProb);
+        const windspeed = parseInt(this.state.weather.windSpeed);
+        // 1. Age
+        var age = this.state.defaultUserDetails.age;
+        if (this.state.userDetails.age !== "") {
+            age = parseInt(this.state.userDetails.age);
+        }
+        // 2. Weight
+        var weight = this.state.defaultUserDetails.weight;
+        if (this.state.userDetails.weight !== "") {
+            weight = parseFloat(this.state.userDetails.weight);
+        }
+        // 3. Height
+        var height = this.state.defaultUserDetails.height;
+        if (this.state.userDetails.height !== "") {
+             height = parseFloat(this.state.userDetails.height);
+        }
+        // 4. Sex
+        var sex = this.state.defaultUserDetails.sex;
+        if (this.state.userDetails.sex !== "default") {
+            if (this.state.userDetails.sex === "m") {
+                const sex = 1;
+            } else {
+                const sex = 0
+            }
+        }
+        // 5. BMI (calculated)
+        var bmi = this.state.defaultUserDetails.bmi;
+        if (this.state.userDetails.bmi !== NaN) {
+            const bmi = parseFloat(weight / ((height/100) ** 2));
+        }
+        // 6. Fat Percentage (calculated)
+        var fatpercentage = 0;
+        if (sex === 1) {
+            fatpercentage = parseInt((1.2 * bmi) + (0.23 * age) - 5.4);
+        } else {
+            fatpercentage = parseInt((1.2 * bmi) + (0.23 * age) - 16.2);
+        }
+        if (fatpercentage < 0) {
+            fatpercentage = 1;
+        }
+        const params = {
+            "temperature": temperature,
+            "humidity": humidity,
+            "precipitation": precipitation,
+            "windspeed": windspeed,
+            "age": age,
+            "weight": weight,
+            "height": height,
+            "sex": sex,
+            "fatpercentage": fatpercentage,
+            "bmi": bmi,
+        };
+        console.log("Sending GET request for recommendations; parameters:");
+        console.log(params);
+        axios.get(
+            this.state.backendEndpoints.getRecommendations,
+            {
+                params: params,
+            }
+        )
+        .then((response) => {
+            console.log("Recommendations received:")
+            // TO DO: Deal with received data
+            console.log(response);
+        })
+        .catch((error) => {
+            console.error
+        });
+
+        if ((this.state.location.longitude) && (this.state.location.latitude)) {
+            //1. Get data from openWeatherMap One Call API
+            const url1 = this.state.urls.openWeatherMap1;
+            axios.get(url1, {
+                params: {
+                    lat: this.state.location.latitude,
+                    lon: this.state.location.longitude,
+                    appid: this.state.apiKeys.openWeatherMap,
+                    units: "metric",
+                },
+            })
+            .then((response) => {
+                //Save raw data (JSON) into state, then call parser function
+                this.state.weatherRawData.openWeatherMap1 = response;
+                this.parseOpenWeatherMapData1();
+                console.log("Received data from 1st weather API - openWeatherMap One Call API");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+            //2. Get data (city name) from openWeatherMap regular API
+            const url2 = this.state.urls.openWeatherMap2;
+            axios.get(url2, {
+                params: {
+                    lat: this.state.location.latitude,
+                    lon: this.state.location.longitude,
+                    appid: this.state.apiKeys.openWeatherMap,
+                    units: "metric",
+                },
+            })
+            .then((response) => {
+                //Save raw data (JSON) into state, then call parser function
+                this.state.weatherRawData.openWeatherMap2 = response;
+                this.parseOpenWeatherMapData2();
+                console.log("Received data from 2nd weather API - openWeatherMap regular API");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
     }
 
 // --------------------
