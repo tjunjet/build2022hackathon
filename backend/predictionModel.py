@@ -1,24 +1,15 @@
-## unconfirmed structure for getting ML model's prediction
+import tensorflow as tf
+import numpy as np
 
-from baseModels import WeatherData
-import pickle
+model = tf.keras.models.load_model("ANN.h5")
 
-# filename = '' # add the saved model's path
-# model = pickle.load(open(filename, 'rb'))
+def predict_clothing(prediction_input):
+    suggested_clothing_set = model.predict(prediction_input)
+    return suggested_clothing_set 
 
-def predict_clothing(model, weather_data):
-    # inputs = preprocessor(inputs)
-    # label = model.predict([message])[0]
-    # suggested_clothing = model.predict_proba([message])
-    # return {'label': label, 'spam_probability': spam_prob[0][1]}
-    # hard coded output atm 
-    return {
-        'thermals' : True,
-        'hoodie' : True,
-        'lightDown' : True,
-        'thickDown' : True,
-        'windbreaker' : True,
-        'umbrella' : True}
-
-def save_user_feedback(feedback):
+def save_user_feedback(feedback): # save in the database 
     return feedback 
+
+test_input = np.array[0,12,34,40,48,60.0,150.0,1,12.5,5]
+
+print(predict_clothing(test_input))
