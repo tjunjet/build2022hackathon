@@ -30,9 +30,9 @@ Furthermore, it was challenging to figure out what deep learning approach to use
 
 
 ## Accomplishments that we're proud of
-Our first major achievement was coming up with the deep learning framework.
+Our first major achievement was coming up with the deep learning framework. It was definitely difficult to think about it from scratch, but after a few trials and errors, thorough research, and (no pun intended) deep learning of different frameworks, we were eventually able to formulate an efficient model that was well-trained.
 
-Our next major achievement was utilizing full-stack development to launch an entire, working application.
+Our next major achievement was utilizing full-stack development to launch an entire, working application. As neither of us had major experience in app development, it was really heartwarming to see our application still being able to come to life even only with 1 week of learning and implementation. This shows the immense hard work and dedication that the members of this group had been willing to put in to learn things they have never tried before, which portrays the most important factor of joining any hackathon - the joy of learning.
 
 ## What we learned
 Even though the application may not have turned out the way we expected, many of us were exposed to new things during this hackathon. 
