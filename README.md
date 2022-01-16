@@ -18,10 +18,6 @@ There are 3 steps to our model for our application.
 
 ## Challenges we ran into
 
-### Web Development: 
-
-### Machine Learning:
-
 Initially, we wanted to figure out an algorithm that can draw relationships between the user body characteristics, weather data, and user feedback. However, we eventually decided to be enterprising and train a deep learning model to come up with accurate predictions to recommend how many layers to wear for a user. 
 
 The first problem that we faced was obtaining a dataset. As we decided to utilize both unsupervised and supervised deep learning to train our application's model, a large dataset was of utmost importance. This is to ensure that any new user to the app will still have relatively accurate recommendations given, even if it were not personalized. Given the specificity of our project, we were unable to find a dataset online that catered to our needs. Hence, through researching the relationships between human body types, weather, and what people would wear in a specific kind of weather, we wrote an algorithm that could generate the dataset in a smart and reliable manner. We then utilized this dataset to train the neural network as a placeholder before more accurate, real-life data could be obtained should this app eventually be implemented.
