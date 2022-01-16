@@ -15,12 +15,26 @@ import { MenuBar } from './components/MenuBar'
 import { PersonalDetailsForm } from './components/PersonalDetailsForm'
 import { WhatToWear } from './components/WhatToWear'
 
+/*
 const garmentTypes = Array(
     {name: "T Shirt",               value: "tshirt"},
     {name: "Thermals",              value: "thermals"},
     {name: "Fleece Jacket",         value: "fleeceJacket"},
     {name: "Down Jacket",           value: "downJacket"},
     {name: "Windbreaker Shell",     value: "windbreakerShell"},
+);
+*/
+
+const garmentTypes = Array(
+    {name: "Thermal Underwear",     value: "thermal"},
+    {name: "Hoodie",                value: "hoodie"},
+    {name: "Fleece Jacket",         value: "fleece"},
+    {name: "Wool Sweater",          value: "wool"},
+    {name: "Light Down Jacket",     value: "light_down"},
+    {name: "Thick Down Jacket",     value: "thick_down"},
+    {name: "Windbreaker Shell",     value: "wind_breaker"},
+    {name: "Umbrella",              value: "umbrella"},
+    {name: "Winter Boots",          value: "winter_boots"},
 );
 
 const urls = {
