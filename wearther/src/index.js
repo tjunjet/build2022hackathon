@@ -325,9 +325,12 @@ class App extends React.Component {
             precipitationProb: precipitationProb,
         };
         //Update state
-        this.setState({
-            weather: weather,
-        });
+        this.setState(
+            {
+                weather: weather,
+            },
+            this.postWeatherData()
+        );
     }
 
     //Parse data from second API call (openWeatherMap regular API)
