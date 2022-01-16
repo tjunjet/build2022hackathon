@@ -94,6 +94,10 @@ class App extends React.Component {
         };
     }
     
+// --------------------
+// UPDATE STATE FROM USER INPUT
+// --------------------
+
     // Add to list of available clothes
     addGarment(customName, garmentType) {
         const clothes = this.state.clothes;
@@ -141,6 +145,16 @@ class App extends React.Component {
             this.postPersonalDetails
         );
         // TO DO: Validate responses; convert to correct data types; set default values if necessary
+    }
+
+// --------------------
+// GET LOCATION & WEATHER DATA
+// --------------------
+
+    //Wrapper function to get new location and weather data
+    //(.getLocation() calls .getWeather() upon successful data received)
+    refreshLocationAndWeather() {
+        this.getLocation();
     }
 
     //Get geolocation data
@@ -257,15 +271,9 @@ class App extends React.Component {
         });
     }
 
-    //Wrapper function to get new location and weather data
-    //(.getLocation() calls .getWeather() upon successful data received)
-    refreshLocationAndWeather() {
-        this.getLocation();
-    }
-
-    // --------------------
-    // API REQUESTS
-    // --------------------
+// --------------------
+// API REQUESTS
+// --------------------
 
     // Make POST request to backend API for submitting weather data
     postWeatherData() {
@@ -398,9 +406,9 @@ class App extends React.Component {
         });
     }
 
-    // --------------------
-    // RENDER
-    // --------------------
+// --------------------
+// RENDER
+// --------------------
 
     render() {
         //Run code on initial load of app
