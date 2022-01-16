@@ -7,4 +7,4 @@ collection = database["weather_data"]
 async def create_one_weather_data(weather_data : WeatherData):
     item = weather_data
     result = await collection.insert_one(item)
-    return item 
+    return result 

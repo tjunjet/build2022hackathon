@@ -104,7 +104,7 @@ async def create_weather_data(weather_data : WeatherData):
 
 @app.get("/predict-clothing-set", response_model=ClothingSet)
 async def get_clothing_set_prediction(prediction_input : PredictionInput): # question: what input?
-    response = await predict_clothing(prediction_input)
+    response = await predict_clothing(prediction_input.dict())
     return response 
 
 # maybe this can be stored in another database with prediction + feedback for future training
