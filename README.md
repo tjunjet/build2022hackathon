@@ -1,5 +1,5 @@
 ## Inspiration
-Pittsburgh's weather is really erratic in the winter and deciding what to wear is relly tough! As students living in Pittsburgh we really wanted to find out what to wear based on current weather conditions in winter and we came up with this app to do so!
+Pittsburgh's weather is really erratic in the winter and deciding what to wear is really tough! As students living in Pittsburgh we really wanted to find out what to wear based on current weather conditions in winter and we came up with this app to do so!
 
 ## What it does
 Our app the "Winter wear-ther guide" takes in user information such as their age, gender, height, weight and combines it with current weather data to give recommendations on what the user should wear! Our algorithms are based on supervised and unsupervised machine learning techniques such as Artificial Neural Networks and AutoEncoding.
