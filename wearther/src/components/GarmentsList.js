@@ -72,6 +72,7 @@ export class GarmentsList extends React.Component {
     }
     render() {
         
+        /*
         const garmentsList = this.props.currentGarments.map((item) => {
             return(
                 <tr key={item.id}>
@@ -88,9 +89,13 @@ export class GarmentsList extends React.Component {
                 </tr>
             );
         });
+        */
+
         return (
             <div className="garmentsList container border pt-2">
-                <h2>My Wardrobe</h2>
+                <h2>
+                    My Wardrobe
+                </h2>
                 <TableContents 
                     currentGarments={this.props.currentGarments} 
                     onRemoveGarment={(id) => this.handleRemove(id)}

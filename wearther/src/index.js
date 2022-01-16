@@ -230,9 +230,11 @@ class App extends React.Component {
                 }
             }
         }
-        console.log("recommended:")
-        console.log(recommendedClothes);
-        // TO DO: Set state with recommended clothes
+        this.setState(
+            {
+                recommendedClothes: recommendedClothes,
+            },
+        );
     }
 
 // --------------------
@@ -627,6 +629,8 @@ class App extends React.Component {
                                 {/*Left column*/}
                                 <WhatToWear 
                                     onSubmit={() => this.getRecommendations()}
+                                    recommendedClothes={this.state.recommendedClothes}
+                                    garmentTypes={this.state.garmentTypes}
                                 />
                                 <GarmentsList 
                                     currentGarments={this.state.clothes} 
