@@ -18,9 +18,9 @@ There are 3 steps to our model for our application.
 
 ## Challenges we ran into
 
-# Web Development: 
+### Web Development: 
 
-# Machine Learning:
+### Machine Learning:
 
 Initially, we wanted to figure out an algorithm that can draw relationships between the user body characteristics, weather data, and user feedback. However, we eventually decided to be enterprising and train a deep learning model to come up with accurate predictions to recommend how many layers to wear for a user. 
 
@@ -30,8 +30,9 @@ Furthermore, it was challenging to figure out what deep learning approach to use
 
 
 ## Accomplishments that we're proud of
-1. Coming up with the deep learning framework
-2. Integrating the entire full-stack
+Our first major achievement was coming up with the deep learning framework.
+
+Our next major achievement was utilizing full-stack development to launch an entire, working application.
 
 ## What we learned
 Even though the application may not have turned out the way we expected, many of us were exposed to new things during this hackathon. 
@@ -47,7 +48,11 @@ Some of the things that we learned during this hackathon:
 
 ## What's next for "The Winter Wear-ther Guide"
 
-The hackathon may be over, but "The Winter Wear-ther Guide" is far from giving up. 
+The hackathon may be over, but "The Winter Wear-ther Guide" is far from giving up. We intend to carry on this project even after the hackathon is over. Here are a few things to develop:
+
+1. A more well-designed and interactive user interface. 
+2. Learning how to implement the application for mobile. 
+3. Adding real-time user data to train our Deep Reinforcement Learning framework to personalize recommendations. 
 
 
 
