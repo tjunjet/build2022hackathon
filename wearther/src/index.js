@@ -33,6 +33,15 @@ const apiKeys = {
     openWeatherMap: "779894551edc39fd557720eea876ce84",
 };
 
+const backendEndpoints = {
+    postPersonalDetails: "http://locahost:8000/create-particulars",
+    postWeatherData: "http://locahost:8000/create-weather-data",
+    postAddGarment: "http://locahost:8000/create-clothing",
+    postRemoveGarment: "http://locahost:8000/delete-clothing-by-id",
+    postFeedback: "http://locahost:8000/save-user-feedback",
+    postGetPrediction: "http://locahost:8000/predict-clothing-set",
+};
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -42,6 +51,7 @@ class App extends React.Component {
             garmentTypes: garmentTypes,
             urls: urls,
             apiKeys: apiKeys,
+            backendEndpoints: backendEndpoints,
             location: {
                 latitude: null,
                 longitude: null,
@@ -71,6 +81,14 @@ class App extends React.Component {
                 bmi: null,
                 bodyFatPercentage: null,
                 coldTolerance: null,
+            },
+            defaultUserDetails: {
+                sex: 1,
+                age: 25,
+                height: 175,
+                weight: 75,
+                bmi: 24.5,
+                bodyFatPercentage: 20,
             },
             initialStartedUp: false,
         };
@@ -111,11 +129,60 @@ class App extends React.Component {
             bodyFatPercentage: bodyFatPercentage,
             coldTolerance: coldTolerance,
         }
-        console.log(userDetails); // Test
-        this.setState({
-            userDetails: userDetails,
-        });
+        this.setState(
+            {
+                userDetails: userDetails,
+            }, 
+            // BUG FIXED (One-press delay): .setState is asynchronous
+            // SOLUTION: Put function to be called after .setState is done as the optional 2nd parameter in .setState
+            this.postPersonalDetails
+        );
         // TO DO: Validate responses; convert to correct data types; set default values if necessary
+    }
+
+    // Make POST request to backend API for submitting personal details
+    postPersonalDetails() {
+        // Convert to backend-ready formats (TO DO: place code somewhere else)
+        // 1. Age
+        var age = this.state.defaultUserDetails.age;
+        if (this.state.userDetails.age !== "") {
+            age = parseInt(this.state.userDetails.age);
+        }
+        // 2. Weight
+        var weight = this.state.defaultUserDetails.weight;
+        console.log(this.state.userDetails.weight);
+        if (this.state.userDetails.weight !== "") {
+            weight = parseFloat(this.state.userDetails.weight);
+        }
+        // 3. Height
+        var height = this.state.defaultUserDetails.height;
+        if (this.state.userDetails.height !== "") {
+             height = parseFloat(this.state.userDetails.height);
+        }
+        // 4. Sex
+        var sex = this.state.defaultUserDetails.sex;
+        if (this.state.userDetails.sex !== "default") {
+            if (this.state.userDetails.sex === "m") {
+                const sex = 1;
+            } else {
+                const sex = 0
+            }
+        }
+        // 5. BMI (calculated)
+        var bmi = this.state.defaultUserDetails.bmi;
+        if (this.state.userDetails.bmi !== NaN) {
+            const bmi = parseFloat(weight / ((height/100) ** 2));
+        }
+        // JSON data prepared for posting
+        const data = {
+            "age": age,
+            "weight": weight,
+            "height": height,
+            "sex": sex,
+            "bmi": bmi,
+            "fatpercentage": 0,
+        }
+        // TO DO: Make API call
     }
 
     //Get geolocation data

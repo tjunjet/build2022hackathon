@@ -40,7 +40,6 @@ export class PersonalDetailsForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         // If none of the fields are filled, ignore
-        console.log(event.target.sex.value);
         if (
             (event.target.sex.value === "default") &&
             (event.target.age.value === "") &&
