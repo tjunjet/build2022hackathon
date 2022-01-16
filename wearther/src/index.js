@@ -109,25 +109,6 @@ class App extends React.Component {
         });
         this.postAddGarment(addedID, customName, garmentType);
     }
-
-    // Make POST request to backend API for adding a garment
-    postAddGarment(addedID, customName, garmentType) {
-        const data = {
-            "clothing_id": addedID,
-            "name": customName,
-            "category": garmentType,
-        };
-        axios.post(
-            this.state.backendEndpoints.postAddGarment, 
-            data
-        )
-        .then((response) => {
-            console.log("Add Garment data posted");
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
     
     // Remove from list of available clothes
     removeGarment(id) {
@@ -137,23 +118,6 @@ class App extends React.Component {
             clothes: clothes,
         });
         this.postRemoveGarment(id);
-    }
-
-    // Make POST request to backend API for adding a garment
-    postRemoveGarment(id) {
-        const data = {
-            "clothing-id": id,
-        };
-        axios.post(
-            this.state.backendEndpoints.postRemoveGarment, 
-            data
-        )
-        .then((response) => {
-            console.log("Remove Garment data posted");
-        })
-        .catch((error) => {
-            console.log(error);
-        });
     }
 
     // Update personal details upon Personal Details form submission
@@ -177,60 +141,6 @@ class App extends React.Component {
             this.postPersonalDetails
         );
         // TO DO: Validate responses; convert to correct data types; set default values if necessary
-    }
-
-    // Make POST request to backend API for submitting personal details
-    postPersonalDetails() {
-        // Convert to backend-ready formats (TO DO: place code somewhere else)
-        // 1. Age
-        var age = this.state.defaultUserDetails.age;
-        if (this.state.userDetails.age !== "") {
-            age = parseInt(this.state.userDetails.age);
-        }
-        // 2. Weight
-        var weight = this.state.defaultUserDetails.weight;
-        console.log(this.state.userDetails.weight);
-        if (this.state.userDetails.weight !== "") {
-            weight = parseFloat(this.state.userDetails.weight);
-        }
-        // 3. Height
-        var height = this.state.defaultUserDetails.height;
-        if (this.state.userDetails.height !== "") {
-             height = parseFloat(this.state.userDetails.height);
-        }
-        // 4. Sex
-        var sex = this.state.defaultUserDetails.sex;
-        if (this.state.userDetails.sex !== "default") {
-            if (this.state.userDetails.sex === "m") {
-                const sex = 1;
-            } else {
-                const sex = 0
-            }
-        }
-        // 5. BMI (calculated)
-        var bmi = this.state.defaultUserDetails.bmi;
-        if (this.state.userDetails.bmi !== NaN) {
-            const bmi = parseFloat(weight / ((height/100) ** 2));
-        }
-        // JSON data prepared for posting
-        const data = {
-            "age": age,
-            "weight": weight,
-            "height": height,
-            "sex": sex,
-            "bmi": bmi,
-            "fatpercentage": 0,
-        };
-        axios.post(
-            this.state.backendEndpoints.postPersonalDetails, 
-            data
-        )
-        .then((response) => {
-            console.log("Personal Details data posted");
-        })
-        .catch((error) => {
-            console.log(error);
-        });
     }
 
     //Get geolocation data
@@ -270,7 +180,7 @@ class App extends React.Component {
                 //Save raw data (JSON) into state, then call parser function
                 this.state.weatherRawData.openWeatherMap1 = response;
                 this.parseOpenWeatherMapData1();
-                console.log("1st call to openWeatherMap One Call API");
+                console.log("Received data from 1st weather API - openWeatherMap One Call API");
             })
             .catch((error) => {
                 console.log(error);
@@ -289,7 +199,7 @@ class App extends React.Component {
                 //Save raw data (JSON) into state, then call parser function
                 this.state.weatherRawData.openWeatherMap2 = response;
                 this.parseOpenWeatherMapData2();
-                console.log("2nd call to openWeatherMap regular API");
+                console.log("Received data from 2nd weather API - openWeatherMap regular API");
             })
             .catch((error) => {
                 console.log(error);
@@ -333,41 +243,6 @@ class App extends React.Component {
         );
     }
 
-    // Make POST request to backend API for submitting weather data
-    postWeatherData() {
-        // Generate date in format yyyy-mm-dd-hh-mm-ss
-        const currentDateAndTime = new Date();
-        const year      = String(currentDateAndTime.getFullYear());
-        const month     = String(currentDateAndTime.getMonth() + 1);
-        const day       = String(currentDateAndTime.getDate());
-        const hour      = String(currentDateAndTime.getHours());
-        const minute    = String(currentDateAndTime.getMinutes());
-        const second    = String(currentDateAndTime.getSeconds());
-        const date = year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second;
-        const temperature = parseFloat(this.state.weather.temp);
-        const humidity = parseInt(this.state.weather.humidity);
-        const precipitation = parseInt(this.state.weather.precipitationProb);
-        const windspeed = parseInt(this.state.weather.windSpeed);
-
-        const data = {
-            "date": date,
-            "temperature": temperature,
-            "humidity": humidity,
-            "precipitation": precipitation,
-            "windspeed": windspeed,
-        };
-        axios.post(
-            this.state.backendEndpoints.postWeatherData, 
-            data
-        )
-        .then((response) => {
-            console.log("Weather data posted");
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
-
     //Parse data from second API call (openWeatherMap regular API)
     parseOpenWeatherMapData2() {
         //Data from second API call (openWeatherMap regular API)
@@ -387,6 +262,145 @@ class App extends React.Component {
     refreshLocationAndWeather() {
         this.getLocation();
     }
+
+    // --------------------
+    // API REQUESTS
+    // --------------------
+
+    // Make POST request to backend API for submitting weather data
+    postWeatherData() {
+        // Generate date in format yyyy-mm-dd-hh-mm-ss
+        const currentDateAndTime = new Date();
+        const year      = String(currentDateAndTime.getFullYear());
+        const month     = String(currentDateAndTime.getMonth() + 1);
+        const day       = String(currentDateAndTime.getDate());
+        const hour      = String(currentDateAndTime.getHours());
+        const minute    = String(currentDateAndTime.getMinutes());
+        const second    = String(currentDateAndTime.getSeconds());
+        const date = year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second;
+        const temperature = parseFloat(this.state.weather.temp);
+        const humidity = parseInt(this.state.weather.humidity);
+        const precipitation = parseInt(this.state.weather.precipitationProb);
+        const windspeed = parseInt(this.state.weather.windSpeed);
+        const data = {
+            "date": date,
+            "temperature": temperature,
+            "humidity": humidity,
+            "precipitation": precipitation,
+            "windspeed": windspeed,
+        };
+        console.log("Posting Weather data:");
+        console.log(data);
+        axios.post(
+            this.state.backendEndpoints.postWeatherData, 
+            data
+        )
+        .then((response) => {
+            console.log("Weather data posted");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // Make POST request to backend API for submitting personal details
+    postPersonalDetails() {
+        // Convert to backend-ready formats (TO DO: place code somewhere else)
+        // 1. Age
+        var age = this.state.defaultUserDetails.age;
+        if (this.state.userDetails.age !== "") {
+            age = parseInt(this.state.userDetails.age);
+        }
+        // 2. Weight
+        var weight = this.state.defaultUserDetails.weight;
+        if (this.state.userDetails.weight !== "") {
+            weight = parseFloat(this.state.userDetails.weight);
+        }
+        // 3. Height
+        var height = this.state.defaultUserDetails.height;
+        if (this.state.userDetails.height !== "") {
+             height = parseFloat(this.state.userDetails.height);
+        }
+        // 4. Sex
+        var sex = this.state.defaultUserDetails.sex;
+        if (this.state.userDetails.sex !== "default") {
+            if (this.state.userDetails.sex === "m") {
+                const sex = 1;
+            } else {
+                const sex = 0
+            }
+        }
+        // 5. BMI (calculated)
+        var bmi = this.state.defaultUserDetails.bmi;
+        if (this.state.userDetails.bmi !== NaN) {
+            const bmi = parseFloat(weight / ((height/100) ** 2));
+        }
+        // JSON data prepared for posting
+        const data = {
+            "age": age,
+            "weight": weight,
+            "height": height,
+            "sex": sex,
+            "bmi": bmi,
+            "fatpercentage": 0,
+        };
+        console.log("Posting Personal Details data:");
+        console.log(data);
+        axios.post(
+            this.state.backendEndpoints.postPersonalDetails, 
+            data
+        )
+        .then((response) => {
+            console.log("Personal Details data posted");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // Make POST request to backend API for adding a garment
+    postAddGarment(addedID, customName, garmentType) {
+        const data = {
+            "clothing_id": addedID,
+            "name": customName,
+            "category": garmentType,
+        };
+        console.log("Posting Add Garment data:");
+        console.log(data);
+        axios.post(
+            this.state.backendEndpoints.postAddGarment, 
+            data
+        )
+        .then((response) => {
+            console.log("Add Garment data posted");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // Make POST request to backend API for adding a garment
+    postRemoveGarment(id) {
+        const data = {
+            "clothing-id": id,
+        };
+        console.log("Posting Remove Garment data:");
+        console.log(data);
+        axios.post(
+            this.state.backendEndpoints.postRemoveGarment, 
+            data
+        )
+        .then((response) => {
+            console.log("Remove Garment data posted");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // --------------------
+    // RENDER
+    // --------------------
 
     render() {
         //Run code on initial load of app
