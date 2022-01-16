@@ -487,49 +487,8 @@ class App extends React.Component {
             console.log(response);
         })
         .catch((error) => {
-            console.error
+            console.log(error);
         });
-
-        if ((this.state.location.longitude) && (this.state.location.latitude)) {
-            //1. Get data from openWeatherMap One Call API
-            const url1 = this.state.urls.openWeatherMap1;
-            axios.get(url1, {
-                params: {
-                    lat: this.state.location.latitude,
-                    lon: this.state.location.longitude,
-                    appid: this.state.apiKeys.openWeatherMap,
-                    units: "metric",
-                },
-            })
-            .then((response) => {
-                //Save raw data (JSON) into state, then call parser function
-                this.state.weatherRawData.openWeatherMap1 = response;
-                this.parseOpenWeatherMapData1();
-                console.log("Received data from 1st weather API - openWeatherMap One Call API");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-            //2. Get data (city name) from openWeatherMap regular API
-            const url2 = this.state.urls.openWeatherMap2;
-            axios.get(url2, {
-                params: {
-                    lat: this.state.location.latitude,
-                    lon: this.state.location.longitude,
-                    appid: this.state.apiKeys.openWeatherMap,
-                    units: "metric",
-                },
-            })
-            .then((response) => {
-                //Save raw data (JSON) into state, then call parser function
-                this.state.weatherRawData.openWeatherMap2 = response;
-                this.parseOpenWeatherMapData2();
-                console.log("Received data from 2nd weather API - openWeatherMap regular API");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        }
     }
 
 // --------------------
@@ -554,7 +513,9 @@ class App extends React.Component {
                         <div className="row">
                             <div className="col-md-6">
                                 {/*Left column*/}
-                                <WhatToWear />
+                                <WhatToWear 
+                                    onSubmit={() => this.getRecommendations()}
+                                />
                                 <GarmentsList 
                                     currentGarments={this.state.clothes} 
                                     onRemoveGarment={(id) => this.removeGarment(id)}
