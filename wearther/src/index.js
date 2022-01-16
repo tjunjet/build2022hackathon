@@ -102,7 +102,7 @@ class App extends React.Component {
             garmentType: garmentType,
             id: this.state.nextGarmentID,
         });
-        addedID = this.state.nextGarmentID;
+        const addedID = this.state.nextGarmentID;
         this.setState({
             clothes: clothes,
             nextGarmentID: (this.state.nextGarmentID + 1),
@@ -329,8 +329,43 @@ class App extends React.Component {
             {
                 weather: weather,
             },
-            this.postWeatherData()
+            this.postWeatherData
         );
+    }
+
+    // Make POST request to backend API for submitting weather data
+    postWeatherData() {
+        // Generate date in format yyyy-mm-dd-hh-mm-ss
+        const currentDateAndTime = new Date();
+        const year      = String(currentDateAndTime.getFullYear());
+        const month     = String(currentDateAndTime.getMonth() + 1);
+        const day       = String(currentDateAndTime.getDate());
+        const hour      = String(currentDateAndTime.getHours());
+        const minute    = String(currentDateAndTime.getMinutes());
+        const second    = String(currentDateAndTime.getSeconds());
+        const date = year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second;
+        const temperature = parseFloat(this.state.weather.temp);
+        const humidity = parseInt(this.state.weather.humidity);
+        const precipitation = parseInt(this.state.weather.precipitationProb);
+        const windspeed = parseInt(this.state.weather.windSpeed);
+
+        const data = {
+            "date": date,
+            "temperature": temperature,
+            "humidity": humidity,
+            "precipitation": precipitation,
+            "windspeed": windspeed,
+        };
+        axios.post(
+            this.state.backendEndpoints.postWeatherData, 
+            data
+        )
+        .then((response) => {
+            console.log("Weather data posted");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     //Parse data from second API call (openWeatherMap regular API)
