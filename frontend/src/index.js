@@ -53,6 +53,7 @@ const backendEndpoints = {
     postAddGarment: "http://localhost:8000/create-clothing", // okay
     postRemoveGarment: "http://localhost:8000/delete-clothing-by-id", // should be changed to a delete 
     postFeedback: "http://localhost:8000/save-user-feedback",
+    sendPredictionParams: "http://localhost:8000/send-prediction-params",
     getRecommendations: "http://localhost:8000/predict-clothing-set",
 };
 
@@ -508,6 +509,7 @@ class App extends React.Component {
 
     // Make GET request to backend API for getting clothing recommendations
     getRecommendations() {
+        const currentDateAndTime = new Date();
         const year      = String(currentDateAndTime.getFullYear());
         const month     = String(currentDateAndTime.getMonth() + 1);
         const day       = String(currentDateAndTime.getDate());
@@ -579,27 +581,40 @@ class App extends React.Component {
             "height": height,
             "sex": sex,
             "fatpercentage": fatpercentage,
-            "bmi": bmi,
+            "bmi": bmi
             // "clothes": clothes,
         };
-        console.log("Sending GET request for recommendations; parameters:");
+        console.log("Sending POST then GET request for recommendations; parameters:");
         console.log(data);
-        axios.get(
-            this.state.backendEndpoints.getRecommendations, {
-                d
-            }
-            
-            //data
+
+        axios.post(
+            this.state.backendEndpoints.sendPredictionParams,
+            data
         )
         .then((response) => {
-            console.log("Recommendations received:")
-            console.log(response);
-            // this.updateRecommendedClothes(response);
+            console.log("Prediction params posted")
         })
         .catch((error) => {
             console.log(error);
         });
-/*
+
+        axios.get(
+            this.state.backendEndpoints.getRecommendations,
+            {
+                params : {
+                    "date" : date
+                }
+            }
+        )
+        .then((response) => {
+            console.log("Recommendations received:")
+            console.log(response);
+            this.updateRecommendedClothes(response);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
         // TESTING WITH PLACEHOLDER RESPONSE
         const placeholderResponse = {
             "thermal": true,
@@ -612,7 +627,7 @@ class App extends React.Component {
             "umbrella": false,
             "winter_boots": false,
         }
-        this.updateRecommendedClothes(placeholderResponse);*/
+        this.updateRecommendedClothes(placeholderResponse);
     }
 
 // --------------------

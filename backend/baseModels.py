@@ -37,11 +37,11 @@ class User(BaseModel):
     # disabled: Optional[bool] = None
 
 class PredictionInput(BaseModel):
-    dateTime : str
+    date : str
     temperature: float
     humidity: int
     precipitation: int
-    windSpeed: int
+    windspeed: int
     age : int
     weight : float
     height : int

@@ -105,15 +105,14 @@ async def create_weather_data(weather_data : WeatherData):
 
 @app.post("/send-prediction-params")
 async def send_prediction_params(prediction_input : PredictionInput):
-    converted_prediction_input = prediction_input.dict()
-    response = await create_prediction_params(converted_prediction_input)
-    if response: return response
-    raise HTTPException(400, "Something went wrong")
+    response = await create_prediction_params(prediction_input.dict())
+    return response 
 
 @app.get("/predict-clothing-set")
-def get_clothing_set_prediction(date : str): # question: what input? 
-    response = predict_clothing(date) # prediction_input.dict()
-    return response 
+async def get_clothing_set_prediction(date : str): # question: what input? 
+    response = await predict_clothing(date) # prediction_input.dict()
+    if response: return response
+    raise HTTPException(400, "Something went wrong")
     # return {"Message": "Received"}
 
 # maybe this can be stored in another database with prediction + feedback for future training
