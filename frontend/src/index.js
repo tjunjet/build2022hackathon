@@ -48,12 +48,13 @@ const apiKeys = {
 };
 
 const backendEndpoints = {
-    postPersonalDetails: "http://locahost:8000/create-particulars",
-    postWeatherData: "http://locahost:8000/create-weather-data",
-    postAddGarment: "http://locahost:8000/create-clothing",
-    postRemoveGarment: "http://locahost:8000/delete-clothing-by-id",
-    postFeedback: "http://locahost:8000/save-user-feedback",
-    getRecommendations: "http://locahost:8000/predict-clothing-set",
+    postPersonalDetails: "http://localhost:8000/create-particulars", // okay
+    postWeatherData: "http://localhost:8000/create-weather-data", //
+    postAddGarment: "http://localhost:8000/create-clothing", // okay
+    postRemoveGarment: "http://localhost:8000/delete-clothing-by-id", // should be changed to a delete 
+    postFeedback: "http://localhost:8000/save-user-feedback",
+    sendPredictionParams: "http://localhost:8000/send-prediction-params",
+    getRecommendations: "http://localhost:8000/predict-clothing-set",
 };
 
 class App extends React.Component {
@@ -194,13 +195,16 @@ class App extends React.Component {
             ...
         }
         */
+        console.log("response: ", response);
+     
         const recommendedClothes = Array();
         // Loop through all possible garment types
         var type = false;
         for (var i in this.state.garmentTypes) {
             type = this.state.garmentTypes[i].value;
             // If the garment type is recommended to wear
-            if (response[type] === true) {
+            if (response['data'][type] === true) {
+                console.log("Response true");
                 var customName = "";
                 var garmentType = type;
                 var id = "";
@@ -235,6 +239,7 @@ class App extends React.Component {
                 recommendedClothes: recommendedClothes,
             },
         );
+        console.log("Recommended:", recommendedClothes)
     }
 
 // --------------------
@@ -381,7 +386,7 @@ class App extends React.Component {
         const precipitation = parseInt(this.state.weather.precipitationProb);
         const windspeed = parseInt(this.state.weather.windSpeed);
         const data = {
-            "date": date,
+            "dateTime": date,
             "temperature": temperature,
             "humidity": humidity,
             "precipitation": precipitation,
@@ -508,6 +513,15 @@ class App extends React.Component {
 
     // Make GET request to backend API for getting clothing recommendations
     getRecommendations() {
+        const currentDateAndTime = new Date();
+        const year      = String(currentDateAndTime.getFullYear());
+        const month     = String(currentDateAndTime.getMonth() + 1);
+        const day       = String(currentDateAndTime.getDate());
+        const hour      = String(currentDateAndTime.getHours());
+        const minute    = String(currentDateAndTime.getMinutes());
+        const second    = String(currentDateAndTime.getSeconds());
+        const date = year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second;
+        
         const temperature = parseFloat(this.state.weather.temp);
         const humidity = parseInt(this.state.weather.humidity);
         const precipitation = parseInt(this.state.weather.precipitationProb);
@@ -560,7 +574,8 @@ class App extends React.Component {
         for (var j in this.state.clothes) {
             clothes[this.state.clothes[j].garmentType] = true;
         }
-        const params = {
+        const data = {
+            "date": date,
             "temperature": temperature,
             "humidity": humidity,
             "precipitation": precipitation,
@@ -573,36 +588,50 @@ class App extends React.Component {
             "bmi": bmi,
             "clothes": clothes,
         };
-        console.log("Sending GET request for recommendations; parameters:");
-        console.log(params);
+        console.log("Sending POST then GET request for recommendations; parameters:");
+        console.log(data);
+
+        axios.post(
+            this.state.backendEndpoints.sendPredictionParams,
+            data
+        )
+        .then((response) => {
+            console.log("Prediction params posted")
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
         axios.get(
             this.state.backendEndpoints.getRecommendations,
             {
-                params: params,
+                params : {
+                    "date" : date
+                }
             }
         )
         .then((response) => {
             console.log("Recommendations received:")
             console.log(response);
-            // this.updateRecommendedClothes(response);
+            this.updateRecommendedClothes(response);
         })
         .catch((error) => {
             console.log(error);
         });
 
         // TESTING WITH PLACEHOLDER RESPONSE
-        const placeholderResponse = {
-            "thermal": true,
-            "hoodie": true,
-            "fleece": false,
-            "wool": false,
-            "light_down": false,
-            "thick_down": false,
-            "wind_breaker": true,
-            "umbrella": false,
-            "winter_boots": false,
-        }
-        this.updateRecommendedClothes(placeholderResponse);
+        // const placeholderResponse = {
+        //     "thermal": true,
+        //     "hoodie": true,
+        //     "fleece": false,
+        //     "wool": false,
+        //     "light_down": false,
+        //     "thick_down": false,
+        //     "wind_breaker": true,
+        //     "umbrella": false,
+        //     "winter_boots": false,
+        // }
+        // this.updateRecommendedClothes(placeholderResponse);
     }
 
 // --------------------
