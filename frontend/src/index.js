@@ -195,13 +195,16 @@ class App extends React.Component {
             ...
         }
         */
+        console.log("response: ", response);
+     
         const recommendedClothes = Array();
         // Loop through all possible garment types
         var type = false;
         for (var i in this.state.garmentTypes) {
             type = this.state.garmentTypes[i].value;
             // If the garment type is recommended to wear
-            if (response[type] === true) {
+            if (response['data'][type] === true) {
+                console.log("Response true");
                 var customName = "";
                 var garmentType = type;
                 var id = "";
@@ -236,6 +239,7 @@ class App extends React.Component {
                 recommendedClothes: recommendedClothes,
             },
         );
+        console.log("Recommended:", recommendedClothes)
     }
 
 // --------------------
