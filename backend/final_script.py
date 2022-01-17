@@ -86,7 +86,7 @@ def possibleCombinations(mydict, N):
         
         #checks if the possble combination is valid
         for index in range(N):
-            #if you dont have and the predicton
+            #if you dont have and the predicton is true 
             if adapted_clothesList[index] == 0 and int(possible_combination[index]) == 1:
                 check = 1
                 break
@@ -180,11 +180,11 @@ possible = possibleCombinations(mydict, 6)
 
 def getUserFeedback(scoring_difference):
     if scoring_difference < -5:
-        return 0 # too hot
+        return 1 # too hot
     elif scoring_difference > 5:
-        return 2 # too hot
+        return -1 # too cold
     else:
-        return 1 # ok
+        return 0 # ok
 
 
 # In[12]:
@@ -193,7 +193,7 @@ def getUserFeedback(scoring_difference):
 def generatefinaldataframe(mydict):
     newdict = {}
     for key in mydict:
-        if key != 'clothes':
+        if key != 'clothes' and key != "_id":
             newdict[key] = mydict[key]
             
     #print(newdict)
