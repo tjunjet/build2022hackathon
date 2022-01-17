@@ -581,8 +581,8 @@ class App extends React.Component {
             "height": height,
             "sex": sex,
             "fatpercentage": fatpercentage,
-            "bmi": bmi
-            // "clothes": clothes,
+            "bmi": bmi,
+            "clothes": clothes,
         };
         console.log("Sending POST then GET request for recommendations; parameters:");
         console.log(data);
@@ -616,18 +616,18 @@ class App extends React.Component {
         });
 
         // TESTING WITH PLACEHOLDER RESPONSE
-        const placeholderResponse = {
-            "thermal": true,
-            "hoodie": true,
-            "fleece": false,
-            "wool": false,
-            "light_down": false,
-            "thick_down": false,
-            "wind_breaker": true,
-            "umbrella": false,
-            "winter_boots": false,
-        }
-        this.updateRecommendedClothes(placeholderResponse);
+        // const placeholderResponse = {
+        //     "thermal": true,
+        //     "hoodie": true,
+        //     "fleece": false,
+        //     "wool": false,
+        //     "light_down": false,
+        //     "thick_down": false,
+        //     "wind_breaker": true,
+        //     "umbrella": false,
+        //     "winter_boots": false,
+        // }
+        // this.updateRecommendedClothes(placeholderResponse);
     }
 
 // --------------------

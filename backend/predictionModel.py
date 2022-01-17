@@ -21,7 +21,7 @@ async def predict_clothing(date : str): #prediction_input
     print("selected:", selected_dataset)
     # model stuff here
     suggested_clothing_set = final_script.generatePrediction(selected_dataset)
-    
+    print("suggested:", suggested_clothing_set)
     return suggested_clothing_set
 
     # {
