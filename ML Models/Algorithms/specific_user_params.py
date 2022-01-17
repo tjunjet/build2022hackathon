@@ -130,8 +130,11 @@ def returnFinalDataframe(sex, age, height, weight, preference_factor, api, perio
     weather_df = weather_df = pd.DataFrame(weather_data)
     
     user_df = userDataframe(sex, age, height, weight, preference_factor)
+    
     duplicated_df = pd.concat([user_df] * weather_df.shape[0], ignore_index = True)
+    
     combined_df = pd.concat([duplicated_df, weather_df], axis = 1)
+    
     for article in train_test_generation.clothesmap:
         combined_df[article] = combined_df.apply(lambda row : train_test_generation.predictusingheatscore(row['temperature'], row['adjusted_cold_resistance'], train_test_generation.heatmap,row['windspeed'], row['precipitation'])[train_test_generation.clothesmap[article]], axis = 1)
     combined_df['scoring_difference'] = combined_df.apply(lambda row : train_test_generation.getdifference(row['temperature'], row['adjusted_cold_resistance'], train_test_generation.heatmap, row['windspeed'], row['precipitation']), axis = 1)
