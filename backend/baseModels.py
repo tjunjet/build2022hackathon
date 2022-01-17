@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from datetime import datetime
 from typing import Optional
 from typing import Dict
 
@@ -38,15 +37,16 @@ class User(BaseModel):
     # disabled: Optional[bool] = None
 
 class PredictionInput(BaseModel):
-    temperature: int
+    dateTime : str
+    temperature: float
     humidity: int
     precipitation: int
     windSpeed: int
     age : int
     weight : float
     height : int
-    sex : bool # 0 for M, 1 for F
+    sex : int # 0 for M, 1 for F
     fatpercentage : float
     bmi : float
-    clothes : Dict[bool]
+    # clothes : Dict[str, bool]
    

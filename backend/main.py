@@ -25,7 +25,8 @@ from user_database import (
 
 from predictionModel import (
     predict_clothing,
-    save_user_feedback
+    save_user_feedback,
+    create_prediction_params
 )
 
 # some middleware stuff, unsure if relevant
@@ -102,10 +103,18 @@ async def create_weather_data(weather_data : WeatherData):
 #### ML PREDICTION     ####
 ###########################
 
-@app.get("/predict-clothing-set", response_model=ClothingSet)
-async def get_clothing_set_prediction(prediction_input : PredictionInput): # question: what input?
-    response = await predict_clothing(prediction_input.dict())
+@app.post("/send-prediction-params")
+async def send_prediction_params(prediction_input : PredictionInput):
+    converted_prediction_input = prediction_input.dict()
+    response = await create_prediction_params(converted_prediction_input)
+    if response: return response
+    raise HTTPException(400, "Something went wrong")
+
+@app.get("/predict-clothing-set")
+def get_clothing_set_prediction(date : str): # question: what input? 
+    response = predict_clothing(date) # prediction_input.dict()
     return response 
+    # return {"Message": "Received"}
 
 # maybe this can be stored in another database with prediction + feedback for future training
 @app.post("/save-user-feedback")
