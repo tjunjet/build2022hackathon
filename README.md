@@ -1,3 +1,6 @@
+##Video Link
+https://www.youtube.com/watch?v=UeieskeAv7Q
+
 ## Elevator Pitch
 Having trouble deciding how many layers to wear on a cold day? Using deep learning, "The Winter Wear-ther Guide" recommends what to wear by formulating relationships between the weather and you!
 
